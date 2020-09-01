@@ -111,7 +111,7 @@ This program is licensed under the terms of the GNU GPLv3. Documentation and ill
 
 ## Dependencies
 
-The _liberatosthene_ comes with the following package (Ubuntu 16.04 LTS) dependencies ([Instructions](DEPEND.md)) :
+The _liberatosthene_ comes with the following package (Ubuntu 20.04 LTS) dependencies ([Instructions](DEPEND.md)) :
 
 * build-essential
 
