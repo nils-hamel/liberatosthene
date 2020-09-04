@@ -291,7 +291,7 @@
             } else {
 
                 /* error detection */
-                if ( le_read < 0 ) {
+                if ( le_read <= 0 ) {
 
                     /* error management */
                     if ( ( errno != EFAULT ) && ( errno != EINTR ) ) {
