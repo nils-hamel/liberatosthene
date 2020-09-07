@@ -47,6 +47,7 @@
     # include "eratosthene-address.h"
     # include "eratosthene-array.h"
     # include "eratosthene-door.h"
+    # include "eratosthene-operator.h"
 
 /*
     header - external includes
@@ -475,6 +476,8 @@
      *
      *  \return Returns LE_ERROR_SUCCESS on success, an error code otherwise
      */
+
+    le_enum_t le_switch_io_query_beta( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket );
 
     le_enum_t le_switch_io_query( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket );
 

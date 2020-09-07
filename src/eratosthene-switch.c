@@ -804,6 +804,150 @@
 
     }
 
+    le_enum_t le_switch_io_query_beta( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket ) {
+
+        /* address variable */
+        le_address_t le_addr = LE_ADDRESS_C;
+
+        /* socket-array size variable */
+        le_size_t le_length = le_array_get_size( le_array );
+
+        /* parsing variable */
+        le_size_t le_parse = 0;
+
+        /* address mode variable */
+        le_byte_t le_mode = 0;
+
+        /* address size variable */
+        le_size_t le_size = 0;
+
+        /* span variable */
+        le_size_t le_span = 0;
+
+        /* door pointer variable */
+        le_door_t * le_pdoor = NULL;
+
+        /* door pointer variable */
+        //le_door_t * le_sdoor = NULL;
+
+        /* check consistency */
+        if ( ( le_length % LE_ARRAY_ADDR ) != 0 ) {
+
+            /* send message */
+            return( LE_ERROR_IO_ARRAY );
+
+        }
+
+        /* parsing socket-array */
+        while ( ( le_parse = le_address_serial( & le_addr, le_array, le_parse, _LE_GET ) ) <= le_length ) {
+
+            /* retrieve address size */
+            le_size = le_address_get_size( & le_addr );
+
+            /* retrieve address span */
+            le_span = le_address_get_span( & le_addr ) + le_size;
+
+            /* reset socket-array */
+            le_array_set_size( le_array + 1, 0 );
+            le_array_set_size( le_array + 2, 0 );
+
+            /* check address mode */
+            if ( ( le_mode = le_address_get_mode( & le_addr ) ) < LE_ADDRESS_OR ) {
+
+                /* query and check door */
+                if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, le_mode - 1 ) ) != NULL ) {
+
+                    /* check mono-vertex detection */
+                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
+
+                        /* gathering process - mono-vertex */
+                        le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                    }
+
+                    /* check poly-vertex detection */
+                    if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+
+                        /* gathering process - poly-vertex */
+                        le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                    }
+
+                    /* door stream management */ // DevNote : Symmetry fault //
+                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
+
+                }
+
+            } else {
+
+                /* query and check door */
+                if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
+
+                    /* check mono-vertex detection */
+                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
+
+                        /* gathering process - mono-vertex */
+                        le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                    }
+
+                    /* check poly-vertex detection */
+                    if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+
+                        /* gathering process - poly-vertex */
+                        le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                    }
+
+                    /* door stream management */ // DevNote : Symmetry fault //
+                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
+
+                }
+
+                /* query and check door */
+                if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 1 ) ) != NULL ) {
+
+                    /* check mono-vertex detection */
+                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
+
+                        /* gathering process - mono-vertex */
+                        le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 2 );
+
+                    }
+
+                    /* check poly-vertex detection */
+                    if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+
+                        /* gathering process - poly-vertex */
+                        le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 2 );
+
+                    }
+
+                    /* door stream management */ // DevNote : Symmetry fault //
+                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
+
+                }
+
+                /* experimental differences */
+                le_operator_get_diff( le_array + 1, le_array + 2 );
+
+            }
+
+            /* write socket-array */
+            if ( le_array_io_write( le_array + 1, LE_MODE_QUER, le_socket ) != LE_MODE_QUER ) {
+
+                /* send message */
+                return( LE_ERROR_IO_WRITE );
+
+            }
+
+        }
+
+        /* send message */
+        return( LE_ERROR_SUCCESS );
+
+    }
+
     le_enum_t le_switch_io_query( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket ) {
 
         /* address variable */

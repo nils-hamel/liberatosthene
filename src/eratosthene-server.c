@@ -308,7 +308,7 @@
                         case ( LE_MODE_QUER ) : {
 
                             /* service management */
-                            le_message = le_switch_io_query( & le_switch, le_array, le_socket );
+                            le_message = le_switch_io_query_beta( & le_switch, le_array, le_socket );
 
                         } break;
 
