@@ -75,7 +75,7 @@
      *  Experimental strict differences detection function.
      */
 
-    void le_operator_get_diff( le_array_t * const le_array, le_array_t * const le_compare );
+    void le_operator_get_diff_strict( le_array_t * const le_array, le_array_t * const le_compare );
 
 /*
     header - C/C++ compatibility

@@ -24,7 +24,7 @@
     source - accessor methods
  */
 
-    void le_operator_get_diff( le_array_t * const le_array, le_array_t * const le_compare ) {
+    void le_operator_get_diff_strict( le_array_t * const le_array, le_array_t * const le_compare ) {
 
         /* array size */
         le_size_t le_asize = le_array_get_size( le_array );
@@ -33,52 +33,50 @@
         le_size_t le_csize = le_array_get_size( le_compare );
 
         /* array pointer */
-        le_real_t * le_apose = NULL;
+        le_byte_t * le_head = NULL;
 
-        /* array pointer */
-        le_real_t * le_cpose = NULL;
-
-        /* array pointer */
-        le_byte_t * le_adata = NULL;
+        /* search index */
+        le_size_t le_index = 0;
 
         /* detection flag */
         le_byte_t le_flag = 0x00;
 
-        /* parsing principal */
+        /* parsing primary */
         for ( le_size_t le_parse = 0; le_parse < le_asize; le_parse += LE_ARRAY_DATA ) {
 
-            /* assign array pointer */
-            le_apose = ( le_real_t * ) ( le_array_get_byte( le_array ) + le_parse );
+            /* compute array pointer */
+            le_head = le_array_get_byte( le_array ) + le_parse;
 
-            /* reset flag */
+            /* reset detection flag */
             le_flag = 0x00;
 
+            /* reset search index */
+            le_index = 0;
+
             /* parsing secondary */
-            for ( le_size_t le_index = 0; le_index < le_csize; le_index += LE_ARRAY_DATA ) {
+            while ( ( le_flag == 0x00 ) && ( le_index < le_csize ) ) {
 
-                /* assign array pointer */
-                le_cpose = ( le_real_t * ) ( le_array_get_byte( le_compare ) + le_index );
+                /* detection test */
+                if ( memcmp( le_head, le_array_get_byte( le_compare ) + le_index, LE_ARRAY_DATA_POSE ) == 0 ) {
 
-                /* experimental fast strict differences detection */
-                if ( memcmp( le_apose, le_cpose, LE_ARRAY_DATA_POSE ) == 0 ) {
-
-                    /* update flag */
+                    /* update detection flag */
                     le_flag = 0xff;
 
-                }
+                /* update parser */
+                } else { le_index += LE_ARRAY_DATA; }
 
             }
 
-            /* check detection flag */
+            /* detection result analysis */
             if ( le_flag == 0xff ) {
 
-                /* assign array pointer */
-                le_adata = ( ( le_byte_t * ) le_apose ) + LE_ARRAY_DATA_POSE;
+                /* compute array pointer */
+                le_head += LE_ARRAY_DATA_POSE;
 
-                /* modulate color */
-                le_adata[1] = 32;
-                le_adata[2] = 32;
-                le_adata[3] = 32;
+                /* primary color modulation */
+                le_head[1] = 48;
+                le_head[2] = 48;
+                le_head[3] = 48;
 
             }
 

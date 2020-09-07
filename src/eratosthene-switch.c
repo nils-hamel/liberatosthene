@@ -929,7 +929,7 @@
                 }
 
                 /* experimental differences */
-                le_operator_get_diff( le_array + 1, le_array + 2 );
+                le_operator_get_diff_strict( le_array + 1, le_array + 2 );
 
             }
 
