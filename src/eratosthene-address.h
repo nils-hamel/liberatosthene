@@ -59,6 +59,11 @@
     # define LE_ADDRESS_C_SIZE(s)     { s, 0, 0, { _LE_TIME_NULL, _LE_TIME_NULL, _LE_TIME_NULL }, { 0 } }
 
     /* define address convolution mode */
+    # define LE_ADDRESS_FTIME         ( 1 )
+    # define LE_ADDRESS_STIME         ( 2 )
+    # define LE_ADDRESS_SDIFF         ( 3 ) /* strict differences */
+
+    /* old convolution mode - to be removed */
     # define LE_ADDRESS_OR            ( 3 )
     # define LE_ADDRESS_AND           ( 4 )
     # define LE_ADDRESS_XOR           ( 5 )

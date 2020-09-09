@@ -72,8 +72,10 @@
 
     /*! \brief accessor methods
      *
-     *  Experimental strict differences detection function.
+     *  Experimental symetric strict differences (SSD) detection function.
      */
+
+    void le_operator_get_ssd( le_array_t * const le_pri, le_array_t * const le_sec );
 
     void le_operator_get_diff_strict( le_array_t * const le_array, le_array_t * const le_compare );
 

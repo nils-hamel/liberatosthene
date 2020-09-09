@@ -928,8 +928,13 @@
 
                 }
 
-                /* experimental differences */
-                le_operator_get_diff_strict( le_array + 1, le_array + 2 );
+                /* check convolution mode */
+                if ( le_mode == LE_ADDRESS_SDIFF ) {
+
+                    /* experimental differences */
+                    le_operator_get_ssd( le_array + 1, le_array + 2 );
+
+                }
 
             }
 
