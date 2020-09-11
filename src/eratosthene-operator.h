@@ -54,6 +54,10 @@
     header - preprocessor definitions
  */
 
+    /* define detection flag */
+    # define LE_OPER_OFF ( 0x00 )
+    # define LE_OPER_SET ( 0xff )
+
 /*
     header - preprocessor macros
  */
@@ -76,8 +80,6 @@
      */
 
     void le_operator_get_ssd( le_array_t * const le_pri, le_array_t * const le_sec );
-
-    void le_operator_get_diff_strict( le_array_t * const le_array, le_array_t * const le_compare );
 
 /*
     header - C/C++ compatibility

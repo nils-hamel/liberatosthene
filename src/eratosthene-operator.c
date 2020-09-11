@@ -37,14 +37,15 @@
         /* array head pointer */
         le_byte_t * le_pri_head = le_pri_base;
         le_byte_t * le_sec_head = le_sec_base;
+        le_byte_t * le_sec_push = le_sec_base;
 
         /* primitive type */
         le_byte_t le_pri_type = 0;
         le_byte_t le_sec_type = 0;
 
         /* detection flag - opposition */
-        le_byte_t le_flag = 0x00;
-        le_byte_t le_galf = 0x00;
+        le_byte_t le_flag = LE_OPER_OFF;
+        le_byte_t le_galf = LE_OPER_OFF;
 
         /* comparison index */
         le_size_t le_index = 0;
@@ -56,10 +57,10 @@
             le_pri_type = * ( le_pri_head + LE_ARRAY_DATA_POSE ) * LE_ARRAY_DATA;
 
             /* reset detection flag */
-            le_flag = 0x00;
+            le_flag = LE_OPER_OFF;
 
             /* reset head */
-            le_sec_head = le_sec_base;
+            le_sec_head = le_sec_push;
 
             /* parsing secondary */
             while ( ( ! le_flag ) && ( ( le_sec_head - le_sec_base ) < le_sec_size ) ) {
@@ -71,7 +72,7 @@
                 if ( le_pri_type == le_sec_type ) {
 
                     /* reset detection flag */
-                    le_galf = 0xff;
+                    le_galf = LE_OPER_SET;
 
                     /* reset comparison index */
                     le_index = 0;
@@ -84,11 +85,11 @@
                         if ( ( ( le_real_t * ) ( le_sec_head + le_index ) )[1] == ( ( le_real_t * ) ( le_pri_head + le_index ) )[1] ) {
 
                             /* update detection flag if last component is different */
-                            if ( ( ( le_real_t * ) ( le_sec_head + le_index ) )[2] != ( ( le_real_t * ) ( le_pri_head + le_index ) )[2] ) le_galf = 0x00;
+                            if ( ( ( le_real_t * ) ( le_sec_head + le_index ) )[2] != ( ( le_real_t * ) ( le_pri_head + le_index ) )[2] ) le_galf = LE_OPER_OFF;
 
                         /* update detection flag */
-                        } else { le_galf = 0x00; }
-                        } else { le_galf = 0x00; }
+                        } else { le_galf = LE_OPER_OFF; }
+                        } else { le_galf = LE_OPER_OFF; }
 
                         /* update comparison index */
                         le_index += LE_ARRAY_DATA;
@@ -98,8 +99,8 @@
 
                     }
 
-                    /* assign detection flag - inverted flags */
-                    le_flag = le_galf;
+                    /* assign detection flag (inverted flags) - push last detection offset */
+                    if ( ( le_flag = le_galf ) ) le_sec_push = le_sec_head;
 
                     /* update head */
                     le_sec_head += le_pri_type;
@@ -138,7 +139,7 @@
             } else {
 
                 /* update head */
-                le_pri_head += LE_ARRAY_DATA;
+                le_pri_head += le_pri_type;
 
             }
 
