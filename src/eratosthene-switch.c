@@ -828,7 +828,7 @@
         le_door_t * le_pdoor = NULL;
 
         /* door pointer variable */
-        //le_door_t * le_sdoor = NULL;
+        le_door_t * le_sdoor = NULL;
 
         /* check consistency */
         if ( ( le_length % LE_ARRAY_ADDR ) != 0 ) {
@@ -880,59 +880,72 @@
 
             } else {
 
-                /* query and check door */
-                if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
-
-                    /* check mono-vertex detection */
-                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
-
-                        /* gathering process - mono-vertex */
-                        le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
-
-                    }
-
-                    /* check poly-vertex detection */
-                    if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
-
-                        /* gathering process - poly-vertex */
-                        le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
-
-                    }
-
-                    /* door stream management */ // DevNote : Symmetry fault //
-                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
-
-                }
-
-                /* query and check door */
-                if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 1 ) ) != NULL ) {
-
-                    /* check mono-vertex detection */
-                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
-
-                        /* gathering process - mono-vertex */
-                        le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 2 );
-
-                    }
-
-                    /* check poly-vertex detection */
-                    if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
-
-                        /* gathering process - poly-vertex */
-                        le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 2 );
-
-                    }
-
-                    /* door stream management */ // DevNote : Symmetry fault //
-                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
-
-                }
-
                 /* check convolution mode */
                 if ( le_mode == LE_ADDRESS_SDIFF ) {
 
+                    /* query and check door */
+                    if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
+
+                        /* check poly-vertex detection */
+                       if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+
+                            /* gathering process - poly-vertex */
+                           le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                        }
+
+                        /* door stream management */ // DevNote : Symmetry fault //
+                        le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
+
+                    }
+
+                    /* query and check door */
+                    if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 1 ) ) != NULL ) {
+
+                        /* check poly-vertex detection */
+                        if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+
+                            /* gathering process - poly-vertex */
+                            le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 2 );
+
+                        }
+
+                        /* door stream management */ // DevNote : Symmetry fault //
+                        le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
+
+                    }
+
                     /* experimental differences */
-                    le_operator_get_ssd( le_array + 1, le_array + 2 );
+                    le_operator_get_ssd_( le_array_get_byte( le_array + 1 ), le_array_get_size( le_array + 1 ), le_array_get_byte( le_array + 2 ) , le_array_get_size( le_array + 2 ) );
+
+                    /* query and check door */
+                    if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
+
+                        /* check mono-vertex detection */
+                        if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
+
+                            /* query and check door */
+                            if ( ( le_sdoor = le_switch_get_query( le_switch, & le_addr, 1 ) ) != NULL ) {
+
+                                /* check mono-vertex detection */
+                                if ( le_door_get_mono( le_sdoor ) == _LE_TRUE ) {
+
+                                    /* gathering process - parallel mono-vertex */
+                                    le_door_io_mono_ssd( le_pdoor, le_sdoor, & le_addr, LE_ADDRESS_XOR, le_size, le_span, le_array + 1, le_address_get_span( & le_addr ) );
+
+                                }
+
+                                /* door stream management */ // DevNote : Symmetry fault //
+                                le_door_set_stream( le_sdoor, LE_DOOR_CLOSE );
+
+                            }
+
+                        }
+
+                    }
+
+                    /* door stream management */ // DevNote : Symmetry fault //
+                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
 
                 }
 
