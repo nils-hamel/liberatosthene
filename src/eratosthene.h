@@ -128,7 +128,7 @@
     # define _LE_USE_PENDING     ( 16 )
     # define _LE_USE_RETRY       ( 3 )
     //# define _LE_USE_ARRAY       ( 2 )
-    # define _LE_USE_ARRAY       ( 3 )
+    # define _LE_USE_ARRAY       ( 4 )
     # define _LE_USE_PATH        ( PATH_MAX + FILENAME_MAX )
 
     /* define types */

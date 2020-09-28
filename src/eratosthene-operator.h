@@ -45,6 +45,7 @@
 
     # include "eratosthene.h"
     # include "eratosthene-array.h"
+    # include "eratosthene-uv3.h"
 
 /*
     header - external includes
@@ -79,9 +80,7 @@
      *  Experimental symetric strict differences (SSD) detection function.
      */
 
-    le_void_t le_operator_get_ssd_( le_byte_t * const le_pri_base, le_size_t const le_pri_size, le_byte_t * const le_sec_base, le_size_t const le_sec_size );
-
-    void le_operator_get_ssd( le_array_t * const le_pri, le_array_t * const le_sec );
+    void le_operator_get_ssd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_mark );
 
 /*
     header - C/C++ compatibility

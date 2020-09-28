@@ -1589,7 +1589,7 @@
 
     }
 
-    le_void_t le_door_io_mono_ssd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_byte_t const le_mode, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_accum ) {
+    le_void_t le_door_io_mono_ssd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_byte_t const le_mode, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_tracker ) {
 
         /* class variable */
         le_mono_t le_pclass = LE_MONO_C;
@@ -1603,47 +1603,50 @@
         /* message variable */
         le_enum_t le_smessage = LE_ERROR_IO_READ;
 
-        /* identity detection */
-        if ( ( le_pdoor->dr_moff != _LE_OFFS_NULL ) && ( le_sdoor->dr_moff != _LE_OFFS_NULL ) ) {
+        /* delayed detection threshold */
+        static le_size_t le_threshold[_LE_USE_DEPTH] = {
+         1,  1,  1,  1,  1, 
+         1,  1,  1,  1,  1,
+         1,  1,  1,  1,  1, 
+         1,  1,  1,  1,  1,
+         2,  2,  3,  3,  4, 
+         4,  5,  5,  6,  6,
+         7,  7,  8,  8,  9, 
+         9, 10, 10, 11, 11
+        };
 
-            /* update accumulator */
-            le_accum --;
+        /* identity detection */
+        if ( le_sdoor->dr_moff != _LE_OFFS_NULL ) {
+
+            /* update depth tracker */
+            le_tracker = le_parse;
 
         }
 
         /* enumeration boundary */
         if ( le_parse == le_span ) {
 
-            /* check offset validity */
-            if ( le_pdoor->dr_moff != _LE_OFFS_NULL ) {
+            /* update array size */
+            le_array_set( le_array, LE_ARRAY_DATA );
 
-                /* update array size */
-                le_array_set( le_array, LE_ARRAY_DATA );
+            /* push element position */
+            le_address_get_pose_( le_addr, le_parse, le_array_mac_lpose( le_array ) );
 
-                /* push element position */
-                le_address_get_pose_( le_addr, le_parse, le_array_mac_lpose( le_array ) );
+            /* push element type */
+            ( * le_array_mac_ltype( le_array ) ) = LE_UV3_POINT;
 
-                /* push element type */
-                ( * le_array_mac_ltype( le_array ) ) = LE_UV3_POINT;
+            /* apply threshold on tracker */
+            if ( ( le_span - le_tracker ) >= le_threshold[le_span] ) {
 
-                le_size_t le_condition = 3 + ( le_parse - 25 );
+                /* push element data */
+                le_mono_io_data( le_pdoor->dr_moff, le_array_mac_ldata( le_array ), * ( le_pdoor->dr_macc + le_parse ) );
 
-                le_condition = ( le_condition < 0 ) ? 0 : le_condition;
+            } else {
 
-                /* apply dynamically delayed detection */
-                if ( le_accum >= le_condition ) {
-
-                    /* push element data */
-                    le_mono_io_data( le_pdoor->dr_moff, le_array_mac_ldata( le_array ), * ( le_pdoor->dr_macc + le_parse ) );
-
-                } else {
-
-                    /* color modulation */
-                    ( le_array_mac_ldata( le_array ) )[0] = 32;
-                    ( le_array_mac_ldata( le_array ) )[1] = 32;
-                    ( le_array_mac_ldata( le_array ) )[2] = 32;
-
-                }
+                /* color modulation */
+                ( le_array_mac_ldata( le_array ) )[0] = 32;
+                ( le_array_mac_ldata( le_array ) )[1] = 32;
+                ( le_array_mac_ldata( le_array ) )[2] = 32;
 
             }
 
@@ -1669,13 +1672,13 @@
             for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
 
                 /* check message */
-                if ( le_pmessage == LE_ERROR_SUCCESS ) {
+                if ( le_pmessage == LE_ERROR_SUCCESS ) { /* not needed */
 
                     /* extract class offset */
                     le_pdoor->dr_moff = le_mono_get_offset( & le_pclass, le_digit );
 
                 /* reset offset */
-                } else { le_pdoor->dr_moff = _LE_OFFS_NULL; }
+                } else { le_pdoor->dr_moff = _LE_OFFS_NULL; } /* not needed */
 
                 /* check message */
                 if ( le_smessage == LE_ERROR_SUCCESS ) {
@@ -1693,7 +1696,7 @@
                     le_address_set_digit( le_addr, le_parse, le_digit );
 
                     /* recursive enumeration */
-                    le_door_io_mono_ssd( le_pdoor, le_sdoor, le_addr, le_mode, le_parse + 1, le_span, le_array, le_accum );
+                    le_door_io_mono_ssd( le_pdoor, le_sdoor, le_addr, le_mode, le_parse + 1, le_span, le_array, le_tracker );
 
                 }
 

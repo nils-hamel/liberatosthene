@@ -745,7 +745,7 @@
 
     le_void_t le_door_io_poly_gather( le_door_t * const le_door, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array );
 
-    /*! \brief i/o methods
+    /*! \brief i/o methods (revised)
      *
      *  This function implements a parallel version of the process implemented
      *  in the \b le_door_io_mono_gather() function.
@@ -771,7 +771,7 @@
      *  \param le_array  Array structure
      */
 
-    le_void_t le_door_io_mono_ssd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_byte_t const le_mode, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_accum );
+    le_void_t le_door_io_mono_ssd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_byte_t const le_mode, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_tracker );
 
     le_void_t le_door_io_mono_parallel( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_byte_t const le_mode, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array );
 

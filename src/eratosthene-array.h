@@ -306,6 +306,22 @@
 
     le_enum_t le_array_set_size( le_array_t * const le_array, le_size_t const le_size );
 
+    /*! \brief mutator methods
+     *
+     *  This function allows to append the content of the second array at the
+     *  end of the first one. The first array size is increased according to
+     *  the second array size and the content of the second array is append at
+     *  the end of the first one.
+     *
+     *  The second array is left unchanged. As the size of the first array is
+     *  modified, its memory allocation is modified (base pointer).
+     *
+     *  \param le_array  First array structure
+     *  \param le_append Second array structure
+     */
+
+    le_void_t le_array_set_append( le_array_t * const le_array, le_array_t const * const le_append );
+
     /*! \brief serialisation methods
      *
      *  This function is used to pack or unpack atomic variables in the data

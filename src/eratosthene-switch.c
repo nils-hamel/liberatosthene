@@ -850,6 +850,7 @@
             /* reset socket-array */
             le_array_set_size( le_array + 1, 0 );
             le_array_set_size( le_array + 2, 0 );
+            le_array_set_size( le_array + 3, 0 );
 
             /* check address mode */
             if ( ( le_mode = le_address_get_mode( & le_addr ) ) < LE_ADDRESS_OR ) {
@@ -916,7 +917,7 @@
                     }
 
                     /* experimental differences */
-                    le_operator_get_ssd_( le_array_get_byte( le_array + 1 ), le_array_get_size( le_array + 1 ), le_array_get_byte( le_array + 2 ) , le_array_get_size( le_array + 2 ) );
+                    le_operator_get_ssd( le_array + 1, le_array + 2, le_array + 3 );
 
                     /* query and check door */
                     if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
@@ -931,7 +932,8 @@
                                 if ( le_door_get_mono( le_sdoor ) == _LE_TRUE ) {
 
                                     /* gathering process - parallel mono-vertex */
-                                    le_door_io_mono_ssd( le_pdoor, le_sdoor, & le_addr, LE_ADDRESS_XOR, le_size, le_span, le_array + 1, le_address_get_span( & le_addr ) );
+                                    le_door_io_mono_ssd( le_pdoor, le_sdoor, & le_addr, LE_ADDRESS_XOR, le_size, le_span, le_array + 1, le_size );
+                                    //le_door_io_mono_ssd( le_pdoor, le_sdoor, & le_addr, LE_ADDRESS_XOR, le_size, le_span, le_array + 1, le_span );
 
                                 }
 
