@@ -751,7 +751,7 @@
 
     /*! \brief i/o methods - missing documentation */
 
-    le_void_t le_door_io_mono_dd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_tracker );
+    le_void_t le_door_io_mono_dd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_delay );
 
     /*! \brief i/o methods (removal)
      *
