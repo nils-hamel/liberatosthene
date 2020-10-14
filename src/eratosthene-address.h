@@ -65,11 +65,6 @@
     # define LE_ADDRESS_DDH           ( 4 ) /* differences detection */
     # define LE_ADDRESS_DDM           ( 5 ) /* differences detection with markers */
 
-    /* old convolution mode - to be removed */
-    # define LE_ADDRESS_OR            ( 3 )
-    # define LE_ADDRESS_AND           ( 4 )
-    # define LE_ADDRESS_XOR           ( 5 )
-
     /* define address query mode */
     # define LE_ADDRESS_NEAR          ( 0 )
     # define LE_ADDRESS_DEEP          ( 1 )

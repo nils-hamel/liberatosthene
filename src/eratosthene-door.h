@@ -747,39 +747,7 @@
 
     /*! \brief i/o methods - missing documentation */
 
-    le_void_t le_door_io_mono_and( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array );
-
-    /*! \brief i/o methods - missing documentation */
-
     le_void_t le_door_io_mono_dd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_delay );
-
-    /*! \brief i/o methods (removal)
-     *
-     *  This function implements a parallel version of the process implemented
-     *  in the \b le_door_io_mono_gather() function.
-     *
-     *  The process is identical but performed on two tree structures in the
-     *  same time. The goal of the implementation is to allows, for mono-vertex
-     *  data, to compute convolutional models on the fly.
-     *
-     *  The currently implemented convolutions are the logical OR, AND and XOR.
-     *  As the parallel gathering goes on, the function compare if one, two or
-     *  none of the data are missing on one of the two tree structures. This is
-     *  on this basis that the function applies the logical convolutions.
-     *
-     *  If the provided array is not empty, its content is kept and the gathered
-     *  data are packed after the existing ones.
-     *
-     *  \param le_pdoor  Door structure - primary
-     *  \param le_sdoor  Door structure - secondary
-     *  \param le_addr   Address structure
-     *  \param le_mode   Convolution mode
-     *  \param le_parse  Current enumerated scale
-     *  \param le_span   Target scale
-     *  \param le_array  Array structure
-     */
-
-    le_void_t le_door_io_mono_parallel( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_byte_t const le_mode, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array );
 
 /*
     header - C/C++ compatibility
