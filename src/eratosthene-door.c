@@ -1471,19 +1471,31 @@
         } else {
 
             /* read class */
-            le_mono_io_read_fast( & le_class, le_door->dr_moff, * ( le_door->dr_macc + le_parse ) );
+            if ( le_mono_io_read_fast( & le_class, le_door->dr_moff, * ( le_door->dr_macc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
-            /* enumerate daughter classes */
-            for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
+                /* fatal error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                # endif
 
-                /* extract class offset */
-                if ( ( le_door->dr_moff = le_mono_get_offset( & le_class, le_digit ) ) != _LE_OFFS_NULL ) {
+                /* fatal error */
+                return;
 
-                    /* update address digit */
-                    le_address_set_digit( le_addr, le_parse, le_digit );
+            } else {
 
-                    /* recursive enumeration */
-                    le_door_io_mono_gather( le_door, le_addr, le_parse + 1, le_span, le_array );
+                /* enumerate daughter classes */
+                for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
+
+                    /* extract class offset */
+                    if ( ( le_door->dr_moff = le_mono_get_offset( & le_class, le_digit ) ) != _LE_OFFS_NULL ) {
+
+                        /* update address digit */
+                        le_address_set_digit( le_addr, le_parse, le_digit );
+
+                        /* recursive enumeration */
+                        le_door_io_mono_gather( le_door, le_addr, le_parse + 1, le_span, le_array );
+
+                    }
 
                 }
 
