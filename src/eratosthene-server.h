@@ -284,7 +284,7 @@
 
     le_void_t le_server_io( le_server_t * const le_server );
 
-    /*! \brief i/o methods
+    /*! \brief i/o methods (outdated documentation)
      *
      *  This function is the main client connection management procedure. It is
      *  usually called as a pthread function after the acceptation of a new

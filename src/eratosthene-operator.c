@@ -24,7 +24,7 @@
     source - accessor methods
  */
 
-    void le_operator_get_ssd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_beacon ) {
+    void le_operator_get_dd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_beacon ) {
 
         /* array sizes */
         le_size_t le_pri_size = le_array_get_size( le_pri );
@@ -138,29 +138,34 @@
 
             } else {
 
-                /* update beacon array size */
-                le_array_set( le_beacon, LE_ARRAY_DATA );
+                /* check beacon array availability */
+                if ( le_beacon != NULL ) {
 
-                /* copy vertex */
-                memcpy( le_array_mac_lpose( le_beacon ), le_pri_head, LE_ARRAY_DATA );
+                    /* update beacon array size */
+                    le_array_set( le_beacon, LE_ARRAY_DATA );
 
-                /* update primitive type */
-                ( * le_array_mac_ltype( le_beacon ) ) = LE_UV3_LINE;
+                    /* copy vertex */
+                    memcpy( le_array_mac_lpose( le_beacon ), le_pri_head, LE_ARRAY_DATA );
 
-                /* vertex height modulation */
-                le_array_mac_lpose( le_beacon )[2] += 5;
-                
-                /* update beacon array size */
-                le_array_set( le_beacon, LE_ARRAY_DATA );
+                    /* update primitive type */
+                    ( * le_array_mac_ltype( le_beacon ) ) = LE_UV3_LINE;
 
-                /* copy vertex */
-                memcpy( le_array_mac_lpose( le_beacon ), le_pri_head, LE_ARRAY_DATA );
+                    /* vertex height modulation */
+                    le_array_mac_lpose( le_beacon )[2] += 5;
+                    
+                    /* update beacon array size */
+                    le_array_set( le_beacon, LE_ARRAY_DATA );
 
-                /* update primitive type */
-                ( * le_array_mac_ltype( le_beacon ) ) = LE_UV3_LINE;
+                    /* copy vertex */
+                    memcpy( le_array_mac_lpose( le_beacon ), le_pri_head, LE_ARRAY_DATA );
 
-                /* vertex height modulation */
-                le_array_mac_lpose( le_beacon )[2] += 505;
+                    /* update primitive type */
+                    ( * le_array_mac_ltype( le_beacon ) ) = LE_UV3_LINE;
+
+                    /* vertex height modulation */
+                    le_array_mac_lpose( le_beacon )[2] += 505;
+
+                }
 
                 /* update head */
                 le_pri_head += le_pri_type;
@@ -169,11 +174,16 @@
 
         }
 
-        /* check beacon size */
-        if ( le_array_get_size( le_beacon ) > 0 ) {
+        /* check beacon array availability */
+        if ( le_beacon != NULL ) {
 
-            /* append beacon to primary array */
-            le_array_set_append( le_pri, le_beacon );
+            /* check beacon size */
+            if ( le_array_get_size( le_beacon ) > 0 ) {
+
+                /* append beacon to primary array */
+                le_array_set_append( le_pri, le_beacon );
+
+            }
 
         }
 

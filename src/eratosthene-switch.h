@@ -419,7 +419,7 @@
 
     le_enum_t le_switch_io_inject( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket );
 
-    /*! \brief i/o methods
+    /*! \brief i/o methods (outdated documentation)
      *
      *  This function is the front-end to server cell-state query from a remote
      *  client.
@@ -444,7 +444,7 @@
 
     le_enum_t le_switch_io_detect( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket );
 
-    /*! \brief i/o methods
+    /*! \brief i/o methods (outdated documentation)
      *
      *  This function is the front-end to server data query from a remote
      *  client.
@@ -476,8 +476,6 @@
      *
      *  \return Returns LE_ERROR_SUCCESS on success, an error code otherwise
      */
-
-    le_enum_t le_switch_io_query_beta( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket );
 
     le_enum_t le_switch_io_query( le_switch_t * const le_switch, le_array_t * const le_array, le_sock_t const le_socket );
 

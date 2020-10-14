@@ -59,9 +59,11 @@
     # define LE_ADDRESS_C_SIZE(s)     { s, 0, 0, { _LE_TIME_NULL, _LE_TIME_NULL, _LE_TIME_NULL }, { 0 } }
 
     /* define address convolution mode */
-    # define LE_ADDRESS_FTIME         ( 1 )
-    # define LE_ADDRESS_STIME         ( 2 )
-    # define LE_ADDRESS_SDIFF         ( 3 ) /* strict differences */
+    # define LE_ADDRESS_FTIME         ( 1 ) /* first time only */
+    # define LE_ADDRESS_STIME         ( 2 ) /* second time only */
+    # define LE_ADDRESS_ACC           ( 3 ) /* accumulation */
+    # define LE_ADDRESS_DDH           ( 4 ) /* differences detection */
+    # define LE_ADDRESS_DDM           ( 5 ) /* differences detection with markers */
 
     /* old convolution mode - to be removed */
     # define LE_ADDRESS_OR            ( 3 )
@@ -119,7 +121,7 @@
  */
 
     /*! \struct le_address_struct
-     *  \brief address structure
+     *  \brief address structure (outdated documentation)
      *
      *  This structure holds the address, or the index, of an equivalence class
      *  defined on the geodetic and time parameter spaces. These addresses are

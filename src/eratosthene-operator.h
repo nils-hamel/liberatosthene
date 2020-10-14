@@ -75,12 +75,9 @@
     header - function prototypes
  */
 
-    /*! \brief accessor methods
-     *
-     *  Experimental symetric strict differences (SSD) detection function.
-     */
+    /*! \brief accessor methods - missing documentation */
 
-    void le_operator_get_ssd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_mark );
+    void le_operator_get_dd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_mark );
 
 /*
     header - C/C++ compatibility

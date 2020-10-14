@@ -56,8 +56,18 @@
         le_comp  = le_origin_c[2] - le_vertex_c[2];
         le_dist += le_comp * le_comp;
 
-        /* compute and return optimal scale */
-        return( ( le_size_t ) ceil( log( ( LE_2P * LE_ADDRESS_WGS_A ) / sqrt( le_dist ) ) / log( 2. ) ) );
+        /* vertex identity management */
+        if ( le_dist > 0. ) {
+
+            /* compute and return optimal scale */
+            return( ( le_size_t ) ceil( log( ( LE_2P * LE_ADDRESS_WGS_A ) / sqrt( le_dist ) ) / log( 2. ) ) );
+
+        } else {
+
+            /* return maximum depth */
+            return( _LE_USE_DEPTH );
+
+        }
 
     }
 
