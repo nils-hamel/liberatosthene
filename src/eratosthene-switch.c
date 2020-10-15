@@ -760,8 +760,8 @@
                 /* query and check door */
                 if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
 
-                    /* check poly-vertex detection */
-                   if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+                    /* check mono-vertex detection */
+                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
 
                         /* set address flag */
                         ( * le_array_mac_byte( le_array + 1, le_index ) ) = 0xff;
@@ -776,8 +776,8 @@
                 /* query and check door */
                 if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
 
-                    /* check mono-vertex detection */
-                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
+                    /* check poly-vertex detection */
+                   if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
 
                         /* set address flag */
                         ( * le_array_mac_byte( le_array + 1, le_index ) ) = 0xff;
@@ -974,8 +974,6 @@
 
                             /* check mode - append beacon */
                             if ( le_mode == LE_ADDRESS_DDM ) le_array_set_append( le_array + 1, le_array + 3 );
-
-                            //le_operator_get_dd_( le_array + 1, le_array + 2, ( le_mode == LE_ADDRESS_DDM ) ? le_array + 3 : NULL );
 
                             /* door stream management - dev.note : symmetry fault */
                             le_door_set_stream( le_sdoor, LE_DOOR_CLOSE );
