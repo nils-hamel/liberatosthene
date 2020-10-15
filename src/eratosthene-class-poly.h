@@ -45,6 +45,7 @@
 
     # include "eratosthene.h"
     # include "eratosthene-class.h"
+    # include "eratosthene-array.h"
 
 /*
     header - external includes
@@ -290,6 +291,10 @@
      */
 
     le_enum_t le_poly_set_memory( le_poly_t * const le_poly, le_size_t const le_size );
+
+    /*! \brief mutator methods - missing documentation */
+
+    le_void_t le_poly_set_release( le_poly_t * const le_poly );
 
     /*! \brief i/o methods
      *

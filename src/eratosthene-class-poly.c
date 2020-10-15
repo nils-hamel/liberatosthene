@@ -167,6 +167,18 @@
 
     }
 
+    le_void_t le_poly_set_release( le_poly_t * const le_poly ) {
+
+        /* check memory allocation */
+        if ( le_poly->pc_link != NULL ) {
+
+            /* release memory */
+            free( le_poly->pc_link );
+
+        }
+
+    }
+
 /*
     source - i/o methods
  */

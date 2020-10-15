@@ -1481,21 +1481,91 @@
                 /* fatal error */
                 return;
 
-            } else {
+            }
 
-                /* enumerate daughter classes */
-                for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
+            /* enumerate daughter classes */
+            for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
 
-                    /* extract class offset */
-                    if ( ( le_door->dr_moff = le_mono_get_offset( & le_class, le_digit ) ) != _LE_OFFS_NULL ) {
+                /* extract class offset */
+                if ( ( le_door->dr_moff = le_mono_get_offset( & le_class, le_digit ) ) != _LE_OFFS_NULL ) {
 
-                        /* update address digit */
-                        le_address_set_digit( le_addr, le_parse, le_digit );
+                    /* update address digit */
+                    le_address_set_digit( le_addr, le_parse, le_digit );
 
-                        /* recursive enumeration */
-                        le_door_io_mono_gather( le_door, le_addr, le_parse + 1, le_span, le_array );
+                    /* recursive enumeration */
+                    le_door_io_mono_gather( le_door, le_addr, le_parse + 1, le_span, le_array );
 
-                    }
+                }
+
+            }
+
+        }
+
+    }
+
+    le_void_t le_door_io_poly_gather_follow( le_door_t * const le_door, le_poly_t const * const le_class, le_size_t const le_size, le_array_t * const le_array ) {
+
+        /* array initial size */
+        le_size_t le_fall = le_array_get_size( le_array );
+
+        /* reading variable */
+        le_size_t le_read = 0;
+
+        /* primitive type */
+        le_size_t le_type = 0;
+
+        /* parsing class links */
+        for ( le_size_t le_index = 0; le_index < le_size; le_index ++ ) {
+
+            /* reset read length */
+            le_read = LE_ARRAY_DATA << 1;
+
+            /* update array size */
+            le_array_set( le_array, le_read );
+
+            /* follow link */
+            fseek( le_door->dr_pdat, le_poly_get_link( le_class, le_index ), SEEK_SET );
+
+            /* import initial vertex */
+            if ( fread( le_array_mac_back( le_array, le_read ), sizeof( le_byte_t ), le_read, le_door->dr_pdat ) != le_read ) {
+
+                /* fatal error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                # endif
+
+                /* service resiliance */
+                le_array_set_size( le_array, le_fall );
+
+                /* fatal error */
+                return;
+
+            } else { 
+
+                /* extract primitive type */
+                le_type = ( * le_array_mac_ltype( le_array ) ); 
+
+            }
+
+            /* check remaining vertex */
+            if ( ( le_read = ( ( le_type * LE_ARRAY_DATA ) - le_read ) ) > 0 ) {
+
+                /* update array size */
+                le_array_set( le_array, le_read );
+
+                /* import remaining vertex */
+                if ( fread( le_array_mac_back( le_array, le_read ), sizeof( le_byte_t ), le_read, le_door->dr_pdat ) != le_read ) {
+
+                    /* fatal error tracking */
+                    # ifdef _LE_FATAL
+                    fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                    # endif
+
+                    /* service resiliance */
+                    le_array_set_size( le_array, le_fall );
+
+                    /* fatal error */
+                    return;
 
                 }
 
@@ -1513,14 +1583,18 @@
         /* size variable */
         le_size_t le_size = 0;
 
-        /* fallback variable */
-        le_size_t le_step = 0;
-
-        /* reading variable */
-        le_size_t le_read = 0;
-
         /* read class - partial */
-        le_poly_io_read_fast( & le_class, le_door->dr_poff, * ( le_door->dr_pacc + le_parse ) );
+        if ( le_poly_io_read_fast( & le_class, le_door->dr_poff, * ( le_door->dr_pacc + le_parse ) ) != LE_ERROR_SUCCESS ) {
+
+            /* fatal error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+            # endif
+
+            /* fatal error */
+            return;
+
+        }
 
         /* enumeration boundary */
         if ( le_parse == le_span ) {
@@ -1531,51 +1605,11 @@
                 /* read class - completion */
                 le_poly_io_read_next( & le_class, * ( le_door->dr_pacc + le_parse ) );
 
-                /* parsing class links */
-                for ( le_size_t le_link = 0; le_link < le_size; le_link ++ ) {
+                /* follow class links */
+                le_door_io_poly_gather_follow( le_door, & le_class, le_size, le_array );
 
-                    /* reset read length */
-                    le_read = LE_ARRAY_DATA << 1;
-
-                    /* retrieve array size */
-                    le_step = le_array_get_size( le_array );
-
-                    /* update array size */
-                    le_array_set( le_array, le_read );
-
-                    /* follow link */
-                    fseek( le_door->dr_pdat, le_poly_get_link( & le_class, le_link ), SEEK_SET );
-
-                    /* import vertex */
-                    if ( fread( le_array_mac_back( le_array, le_read ), sizeof( le_byte_t ), le_read, le_door->dr_pdat ) != le_read ) {
-
-                        /* fallback */
-                        le_array_set_size( le_array, le_step );
-
-                    } else {
-
-                        /* check remaining read length */
-                        if ( ( le_read = ( * le_array_mac_ltype( le_array ) ) * LE_ARRAY_DATA - le_read ) > 0 ) {
-
-                            /* update array size */
-                            le_array_set( le_array, le_read );
-
-                            /* import vertex */
-                            if ( fread( le_array_mac_back( le_array, le_read ), sizeof( le_byte_t ), le_read, le_door->dr_pdat ) != le_read ) {
-
-                                /* fallback */
-                                le_array_set_size( le_array, le_step );
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                /* delete class */
-                le_poly_delete( & le_class );
+                /* release class memory */
+                le_poly_set_release( & le_class );
 
             }
 
@@ -1670,57 +1704,178 @@
                 /* fatal error */
                 return;
 
-            } else {
+            }
 
-                /* check secondary state */
-                if ( le_sdoor->dr_moff != _LE_OFFS_NULL ) {
+            /* check secondary state */
+            if ( le_sdoor->dr_moff != _LE_OFFS_NULL ) {
 
-                    /* read class offsets */
-                    if ( le_mono_io_read_fast( & le_sclass, le_sdoor->dr_moff, * ( le_sdoor->dr_macc + le_parse ) ) != LE_ERROR_SUCCESS ) {
+                /* read class offsets */
+                if ( le_mono_io_read_fast( & le_sclass, le_sdoor->dr_moff, * ( le_sdoor->dr_macc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
-                        /* fatal error tracking */
-                        # ifdef _LE_FATAL
-                        fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
-                        # endif
+                    /* fatal error tracking */
+                    # ifdef _LE_FATAL
+                    fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                    # endif
 
-                        /* fatal error */
-                        return;
+                    /* fatal error */
+                    return;
+
+                }
+
+                /* update secondary state flag */
+                le_flag = _LE_TRUE;
+
+            /* update secondary state flag */
+            } else { le_flag = _LE_FALSE; }
+
+            /* enumerate daughter classes */
+            for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
+            
+                /* extract and check offset */
+                if ( ( le_pdoor->dr_moff = le_mono_get_offset( & le_pclass, le_digit ) ) != _LE_OFFS_NULL ) {
+
+                    /* check flag */
+                    if ( le_flag == _LE_TRUE ) {
+
+                        /* extract offset */
+                        le_sdoor->dr_moff = le_mono_get_offset( & le_sclass, le_digit );
+
+                    }
+
+                    /* update address digit */
+                    le_address_set_digit( le_addr, le_parse, le_digit );
+
+                    /* recursive daughter classes enumeration */
+                    le_door_io_mono_dd( le_pdoor, le_sdoor, le_addr, le_parse + 1, le_span, le_array, le_delay );
+
+                }
+
+            }
+
+        }
+
+    }
+
+    le_void_t le_door_io_poly_dd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_array_t * const le_dual, le_array_t * const le_beacon ) {
+
+        /* class variable */
+        le_poly_t le_pclass = LE_POLY_C;
+        le_poly_t le_sclass = LE_POLY_C;
+
+        /* secondary state flag */
+        le_enum_t le_flag = _LE_TRUE;
+
+        le_size_t le_psize = le_array_get_size( le_array );
+        le_size_t le_ssize = le_array_get_size( le_dual  );
+
+        /* size variable */
+        le_size_t le_size = 0;
+
+        /* read class - partial */
+        if ( le_poly_io_read_fast( & le_pclass, le_pdoor->dr_poff, * ( le_pdoor->dr_pacc + le_parse ) ) != LE_ERROR_SUCCESS ) {
+
+            /* fatal error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+            # endif
+
+            /* fatal error */
+            return;
+
+        }
+
+        /* check secondary state */
+        if ( le_sdoor->dr_poff != _LE_OFFS_NULL ) {
+
+            /* read class - partial */
+            if ( le_poly_io_read_fast( & le_sclass, le_sdoor->dr_poff, * ( le_sdoor->dr_pacc + le_parse ) ) != LE_ERROR_SUCCESS ) {
+
+                /* fatal error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                # endif
+
+                /* fatal error */
+                return;
+
+            }
+
+            /* update secondary state flag */
+            le_flag = _LE_TRUE;
+
+        /* update secondary state flag */
+        } else { le_flag = _LE_FALSE; }
+
+        /* enumeration boundary */
+        if ( le_parse == le_span ) {
+
+            /* check class content */
+            if ( ( le_size = le_poly_get_size( & le_pclass ) ) > 0 ) {
+
+                /* read class - completion */
+                le_poly_io_read_next( & le_pclass, * ( le_pdoor->dr_pacc + le_parse ) );
+
+                /* follow class links */
+                le_door_io_poly_gather_follow( le_pdoor, & le_pclass, le_size, le_array );
+
+                /* release class memory */
+                le_poly_delete( & le_pclass );
+
+                /* check flag */
+                if ( le_flag == _LE_TRUE ) {
+
+                    /* check class content */
+                    if ( ( le_size = le_poly_get_size( & le_sclass ) ) > 0 ) {
+
+                        /* read class - completion */
+                        le_poly_io_read_next( & le_sclass, * ( le_sdoor->dr_pacc + le_parse ) );
+
+                        /* follow class links */
+                        le_door_io_poly_gather_follow( le_sdoor, & le_sclass, le_size, le_dual );
+
+                        /* release class memory */
+                        le_poly_delete( & le_sclass );
+
+                        /* apply differences detection operator */
+                        le_operator_get_dd( le_array, le_dual, le_beacon, le_psize, le_ssize );
 
                     } else {
 
-                        /* update secondary state flag */
-                        le_flag = _LE_TRUE;
+                        /* check beacon array */
+                        if ( le_beacon != NULL ) le_operator_get_marker( le_array, le_beacon, le_psize );
 
                     }
 
                 } else {
 
-                    /* update secondary state flag */
-                    le_flag = _LE_FALSE;
+                    /* check beacon array */
+                    if ( le_beacon != NULL ) le_operator_get_marker( le_array, le_beacon, le_psize );
 
                 }
 
-                /* enumerates daughter classes */
-                for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
-                
-                    /* extract and check offset */
-                    if ( ( le_pdoor->dr_moff = le_mono_get_offset( & le_pclass, le_digit ) ) != _LE_OFFS_NULL ) {
+            }
 
-                        /* check flag */
-                        if ( le_flag == _LE_TRUE ) {
+        } else {
 
-                            /* extract offset */
-                            le_sdoor->dr_moff = le_mono_get_offset( & le_sclass, le_digit );
+            /* enumerate daughter classes */
+            for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
 
-                        }
+                /* extract class offset */
+                if ( ( le_pdoor->dr_poff = le_poly_get_offset( & le_pclass, le_digit ) ) != _LE_OFFS_NULL ) {
 
-                        /* update address digit */
-                        le_address_set_digit( le_addr, le_parse, le_digit );
+                    /* check flag */
+                    if ( le_flag == _LE_TRUE ) {
 
-                        /* recursive daughter classes enumeration */
-                        le_door_io_mono_dd( le_pdoor, le_sdoor, le_addr, le_parse + 1, le_span, le_array, le_delay );
+                        /* extract offset */
+                        le_sdoor->dr_poff = le_poly_get_offset( & le_sclass, le_digit );
 
                     }
+
+                    /* update address digit */
+                    le_address_set_digit( le_addr, le_parse, le_digit );
+
+                    /* recursive enumeration */
+                    le_door_io_poly_dd( le_pdoor, le_sdoor, le_addr, le_parse + 1, le_span, le_array, le_dual, le_beacon );
 
                 }
 

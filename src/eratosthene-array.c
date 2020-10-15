@@ -189,14 +189,22 @@
 
     le_void_t le_array_set_append( le_array_t * const le_array, le_array_t const * const le_append ) {
 
-        /* push array size */
-        le_size_t le_size = le_array->ar_vsize;
+        /* array size */
+        le_size_t le_size = 0;
 
-        /* update array size */
-        le_array_set( le_array, le_append->ar_vsize );
+        /* check array size */
+        if ( le_append->ar_vsize > 0 ) {
 
-        /* append array */
-        memcpy( le_array->ar_vbyte + le_size, le_append->ar_vbyte, le_append->ar_vsize );
+            /* retrieve array size */
+            le_size = le_array_get_size( le_array );
+
+            /* update array size */
+            le_array_set( le_array, le_append->ar_vsize );
+
+            /* append array */
+            memcpy( le_array->ar_vbyte + le_size, le_append->ar_vbyte, le_append->ar_vsize );
+
+        }
 
     }
 

@@ -77,7 +77,15 @@
 
     /*! \brief accessor methods - missing documentation */
 
-    void le_operator_get_dd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_mark );
+    void le_operator_get_marker( le_array_t * const le_array, le_array_t * const le_beacon, le_size_t const le_offset );
+
+    /*! \brief accessor methods - missing documentation */
+
+    void le_operator_get_dd( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_beacon, le_size_t const le_pri_offset, le_size_t const le_sec_offset );
+
+    /*! \brief removal */
+
+    void le_operator_get_dd_( le_array_t * const le_pri, le_array_t * const le_sec, le_array_t * const le_mark );
 
 /*
     header - C/C++ compatibility

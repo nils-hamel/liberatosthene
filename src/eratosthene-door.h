@@ -49,6 +49,7 @@
     # include "eratosthene-class-mono.h"
     # include "eratosthene-class-poly.h"
     # include "eratosthene-geodesy.h"
+    # include "eratosthene-operator.h"
     # include "eratosthene-uv3.h"
 
 /*
@@ -748,6 +749,10 @@
     /*! \brief i/o methods - missing documentation */
 
     le_void_t le_door_io_mono_dd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_size_t le_delay );
+
+    /*! \brief i/o methods - missing documentation */
+
+    le_void_t le_door_io_poly_dd( le_door_t * const le_pdoor, le_door_t * const le_sdoor, le_address_t * const le_addr, le_size_t const le_parse, le_size_t const le_span, le_array_t * const le_array, le_array_t * const le_dual, le_array_t * const le_beacon );
 
 /*
     header - C/C++ compatibility
