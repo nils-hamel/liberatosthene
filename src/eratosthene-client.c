@@ -102,6 +102,26 @@
     }
 
 /*
+    source - display methods
+ */
+
+    le_void_t le_client_print_host( le_sock_t const le_socket, le_file_t const le_stream ) {
+
+        /* host address */
+        struct sockaddr_in le_addr = LE_ADDRIN_C;
+
+        /* address structure length */
+        socklen_t le_length = sizeof( struct sockaddr_in );
+
+        /* retreive host address */
+        getpeername( le_socket, ( struct sockaddr * ) & le_addr, & le_length );
+
+        /* display host address in stream */
+        fprintf( le_stream, "%s\n", inet_ntoa( le_addr.sin_addr ) );
+
+    }
+
+/*
     source - i/o methods
  */
 

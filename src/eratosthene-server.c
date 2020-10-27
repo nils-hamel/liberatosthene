@@ -267,6 +267,9 @@
         /* create switch */
         le_switch = le_switch_create( le_server->sv_path, le_server->sv_scfg, le_server->sv_tcfg );
 
+        /* display information */
+        fprintf( stdout, "T, C, %li, ", pthread_self() ); le_client_print_host( le_socket, stdout );
+        
         /* client connection */
         while ( le_message == LE_ERROR_SUCCESS ) {
 
@@ -295,13 +298,6 @@
 
                             /* service management */
                             le_message = le_switch_io_inject( & le_switch, le_array, le_socket );
-
-                        } break;
-
-                        case ( LE_MODE_DETE ) : {
-
-                            /* service management */
-                            le_message = le_switch_io_detect( & le_switch, le_array, le_socket );
 
                         } break;
 
@@ -335,6 +331,9 @@
 
         /* delete socket-array stack */
         le_array_mac_delete( le_array, _LE_USE_ARRAY );
+
+        /* display information */
+        fprintf( stdout, "T, R, %li, %" _LE_ENUM_P "\n", pthread_self(), le_message );
 
         /* return null pointer */
         return( NULL );

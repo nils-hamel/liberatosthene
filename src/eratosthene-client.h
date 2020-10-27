@@ -96,6 +96,19 @@
 
     le_sock_t le_client_delete( le_sock_t const le_socket );
 
+    /*! \brief display methods
+     *
+     *  This function allows to dump in the provided stream the IP address of
+     *  the host linked to the provided socket descriptor. The IP address is
+     *  converted to string before to be printed in the stream. And end of line
+     *  is also dumped after the address.
+     *
+     *  \param le_socket Socket descriptor
+     *  \param le_stream Stream descriptor
+     */
+
+    le_void_t le_client_print_host( le_sock_t const le_socket, le_file_t const le_stream );
+
     /*! \brief i/o methods
      *
      *  This function waits client connection and accept them as they arrive. In

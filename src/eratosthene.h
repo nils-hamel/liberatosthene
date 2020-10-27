@@ -202,9 +202,9 @@
     /* define server/client modes */
     # define LE_MODE_NULL        ( 0x00 )
     # define LE_MODE_AUTH        ( 0x01 )
-    # define LE_MODE_DETE        ( 0x02 )
     # define LE_MODE_QUER        ( 0x03 )
     # define LE_MODE_INJE        ( 0x04 )
+    # define LE_MODE_JUMP        ( 0x05 )
 
     /* define mathematical constants */
     # define LE_PI               ( 3.1415926535897932384626433832795029 )
