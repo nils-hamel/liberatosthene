@@ -76,7 +76,7 @@
     /* define array-size - address */
     # define LE_ARRAY_ADDR_TIME       ( sizeof( le_time_t ) * _LE_USE_TIMES )
     # define LE_ARRAY_ADDR_DESC       ( sizeof( le_byte_t ) * 3 )
-    # define LE_ARRAY_ADDR            ( LE_ARRAY_ADDR_TIME + LE_ARRAY_ADDR_DESC + _LE_USE_DEPTH )
+    # define LE_ARRAY_ADDR            ( LE_ARRAY_ADDR_TIME + LE_ARRAY_ADDR_DESC + ( _LE_USE_DEPTH >> 1 ) )
 
     /* define array-size - uv3 */
     # define LE_ARRAY_DATA_POSE       ( sizeof( le_real_t ) * 3 )

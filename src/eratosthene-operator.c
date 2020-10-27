@@ -106,7 +106,9 @@
             /* reset detection flag */
             le_flag = LE_OPER_OFF;
 
-            /* reset head - devnote : could be replaced by last identity detection head for improvement (to be confirmed on duplicated primitives with differnet color) */
+            /* reset head - devnote : could be replaced by last identity detection
+               head for improvement (to be confirmed on duplicated primitives with
+               differnet color) */
             le_sec_head = le_sec_head;
 
             /* parsing secondary */

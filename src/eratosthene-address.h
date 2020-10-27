@@ -55,44 +55,44 @@
  */
 
     /* define pseudo-constructor */
-    # define LE_ADDRESS_C             { 0, 0, 0, { _LE_TIME_NULL, _LE_TIME_NULL, _LE_TIME_NULL }, { 0 } }
-    # define LE_ADDRESS_C_SIZE(s)     { s, 0, 0, { _LE_TIME_NULL, _LE_TIME_NULL, _LE_TIME_NULL }, { 0 } }
+    # define LE_ADDRESS_C         { 0, 0, 0, { _LE_TIME_NULL, _LE_TIME_NULL, _LE_TIME_NULL }, { 0 } }
+    # define LE_ADDRESS_C_SIZE(s) { s, 0, 0, { _LE_TIME_NULL, _LE_TIME_NULL, _LE_TIME_NULL }, { 0 } }
 
     /* define address convolution mode */
-    # define LE_ADDRESS_FTIME         ( 1 ) /* first time only */
-    # define LE_ADDRESS_STIME         ( 2 ) /* second time only */
-    # define LE_ADDRESS_ACC           ( 3 ) /* accumulation */
-    # define LE_ADDRESS_DDH           ( 4 ) /* differences detection */
-    # define LE_ADDRESS_DDM           ( 5 ) /* differences detection with markers */
+    # define LE_ADDRESS_FTIME     ( 1 ) /* first time only */
+    # define LE_ADDRESS_STIME     ( 2 ) /* second time only */
+    # define LE_ADDRESS_ACC       ( 3 ) /* accumulation */
+    # define LE_ADDRESS_DDH       ( 4 ) /* differences detection */
+    # define LE_ADDRESS_DDM       ( 5 ) /* differences detection with visual markers */
 
     /* define address query mode */
-    # define LE_ADDRESS_NEAR          ( 0 )
-    # define LE_ADDRESS_DEEP          ( 1 )
+    # define LE_ADDRESS_NEAR      ( 0 )
+    # define LE_ADDRESS_DEEP      ( 1 )
 
     /* asynchronous dimension */
-    # define LE_ADDRESS_DEPTH_P       ( 1 )
-    # define LE_ADDRESS_DEPTH_A       ( 10 )
+    # define LE_ADDRESS_DEPTH_P   ( 1 )
+    # define LE_ADDRESS_DEPTH_A   ( 10 )
 
     /* define WGS84 ellipsoid parameters */
-    # define LE_ADDRESS_WGS_A         ( 6378137.0 )
+    # define LE_ADDRESS_WGS_A     ( 6378137.0 )
 
     /* define ellipsoidal coordinates boundaries */
-    # define LE_ADDRESS_MIN_L         ( - LE_PI )
-    # define LE_ADDRESS_MAX_L         ( + LE_PI )
-    # define LE_ADDRESS_MIN_A         ( - LE_P2 )
-    # define LE_ADDRESS_MAX_A         ( + LE_P2 )
-    # define LE_ADDRESS_MIN_H         ( - ( LE_PI * LE_ADDRESS_WGS_A ) / 1024.0 )
-    # define LE_ADDRESS_MAX_H         ( + ( LE_PI * LE_ADDRESS_WGS_A ) / 1024.0 )
+    # define LE_ADDRESS_MIN_L     ( - LE_PI )
+    # define LE_ADDRESS_MAX_L     ( + LE_PI )
+    # define LE_ADDRESS_MIN_A     ( - LE_P2 )
+    # define LE_ADDRESS_MAX_A     ( + LE_P2 )
+    # define LE_ADDRESS_MIN_H     ( - ( LE_PI * LE_ADDRESS_WGS_A ) / 1024.0 )
+    # define LE_ADDRESS_MAX_H     ( + ( LE_PI * LE_ADDRESS_WGS_A ) / 1024.0 )
 
     /* define ellipsoidal coordinates ranges */
-    # define LE_ADDRESS_RAN_L         ( LE_ADDRESS_MAX_L - LE_ADDRESS_MIN_L )
-    # define LE_ADDRESS_RAN_A         ( LE_ADDRESS_MAX_A - LE_ADDRESS_MIN_A )
-    # define LE_ADDRESS_RAN_H         ( LE_ADDRESS_MAX_H - LE_ADDRESS_MIN_H )
+    # define LE_ADDRESS_RAN_L     ( LE_ADDRESS_MAX_L - LE_ADDRESS_MIN_L )
+    # define LE_ADDRESS_RAN_A     ( LE_ADDRESS_MAX_A - LE_ADDRESS_MIN_A )
+    # define LE_ADDRESS_RAN_H     ( LE_ADDRESS_MAX_H - LE_ADDRESS_MIN_H )
 
     /* define ellipsoidal coordinates ranges */
-    # define LE_ADDRESS_IRN_L         ( 1.0 / LE_ADDRESS_RAN_L )
-    # define LE_ADDRESS_IRN_A         ( 1.0 / LE_ADDRESS_RAN_A )
-    # define LE_ADDRESS_IRN_H         ( 1.0 / LE_ADDRESS_RAN_H )
+    # define LE_ADDRESS_IRN_L     ( 1.0 / LE_ADDRESS_RAN_L )
+    # define LE_ADDRESS_IRN_A     ( 1.0 / LE_ADDRESS_RAN_A )
+    # define LE_ADDRESS_IRN_H     ( 1.0 / LE_ADDRESS_RAN_H )
 
 /*
     header - preprocessor macros

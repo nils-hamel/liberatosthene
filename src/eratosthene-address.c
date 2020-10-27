@@ -34,7 +34,7 @@
     le_byte_t le_address_get_mode( le_address_t const * const le_address ) {
 
         /* return convolution mode */
-        return( le_address->as_mode % 16 );
+        return( le_address->as_mode & 0x0f );
 
     }
 
@@ -68,10 +68,6 @@
 
     le_enum_t le_address_get_equal( le_address_t const * const le_addra, le_address_t const * const le_addrb ) {
 
-        /* array pointer variables */
-        le_byte_t * le_pa = ( le_byte_t * ) le_addra->as_digit;
-        le_byte_t * le_pb = ( le_byte_t * ) le_addrb->as_digit;
-
         /* size comparison */
         if ( le_addra->as_size != le_addrb->as_size ) {
 
@@ -96,44 +92,19 @@
 
         }
 
-        /* time comparison */
-        if ( le_addra->as_times[0] != le_addrb->as_times[0] ) {
+        /* times array comparison */
+        if ( memcmp( le_addra->as_times, le_addrb->as_times, sizeof( le_time_t ) * _LE_USE_TIMES ) != 0 ) {
 
             /* send message */
             return( _LE_FALSE );
 
         }
 
-        /* time comparison */
-        if ( le_addra->as_times[1] != le_addrb->as_times[1] ) {
+        /* digit array comparison */
+        if ( memcmp( le_addra->as_digit, le_addrb->as_digit, le_addra->as_size ) != 0 ) {
 
             /* send message */
             return( _LE_FALSE );
-
-        }
-
-        /* comb comparison */
-        if ( le_addra->as_times[2] != le_addrb->as_times[2] ) {
-
-            /* send message */
-            return( _LE_FALSE );
-
-        }
-
-        /* end of array */
-        le_pa += le_addra->as_size;
-        le_pb += le_addrb->as_size;
-
-        /* parse address digits */
-        while ( ( -- le_pb, --le_pa ) >= le_addra->as_digit ) {
-
-            /* digit comparison */
-            if ( ( * le_pa ) != ( * le_pb ) ) {
-
-                /* send message */
-                return( _LE_FALSE );
-
-            }
 
         }
 
@@ -144,10 +115,6 @@
 
     le_enum_t le_address_get_equal_index( le_address_t const * const le_addra, le_address_t const * const le_addrb ) {
 
-        /* array pointer variables */
-        le_byte_t * le_pa = ( le_byte_t * ) le_addra->as_digit;
-        le_byte_t * le_pb = ( le_byte_t * ) le_addrb->as_digit;
-
         /* size comparison */
         if ( le_addra->as_size != le_addrb->as_size ) {
 
@@ -156,25 +123,16 @@
 
         }
 
-        /* end of array */
-        le_pa += le_addra->as_size;
-        le_pb += le_addrb->as_size;
+        /* digit array comparison */
+        if ( memcmp( le_addra->as_digit, le_addrb->as_digit, le_addra->as_size ) != 0 ) {
 
-        /* parse address digits */
-        while ( ( -- le_pb, --le_pa ) >= le_addra->as_digit ) {
-
-            /* digit comparison */
-            if ( ( * le_pa ) != ( * le_pb ) ) {
-
-                /* send message */
-                return( _LE_FALSE );
-
-            }
+            /* send message */
+            return( _LE_FALSE );
 
         }
 
         /* send message */
-        return( _LE_TRUE );
+        return( _LE_FALSE );
 
     }
 
@@ -442,9 +400,9 @@
         }
 
         /* coordinates de-normalisation */
-        le_pose[0] = LE_ADDRESS_MIN_L + le_pose[0] * LE_ADDRESS_RAN_L;
-        le_pose[1] = LE_ADDRESS_MIN_A + le_pose[1] * LE_ADDRESS_RAN_A;
-        le_pose[2] = LE_ADDRESS_MIN_H + le_pose[2] * LE_ADDRESS_RAN_H;
+        le_pose[0] = LE_ADDRESS_MIN_L + ( le_pose[0] * LE_ADDRESS_RAN_L );
+        le_pose[1] = LE_ADDRESS_MIN_A + ( le_pose[1] * LE_ADDRESS_RAN_A );
+        le_pose[2] = LE_ADDRESS_MIN_H + ( le_pose[2] * LE_ADDRESS_RAN_H );
 
     }
 
@@ -461,21 +419,15 @@
 
     le_void_t le_address_set_mode( le_address_t * const le_address, le_byte_t const le_mode ) {
 
-        /* reset convolution mode */
-        le_address->as_mode &= 0xf0;
-
         /* assign convolution mode */
-        le_address->as_mode |= le_mode % 16;
+        le_address->as_mode = ( le_address->as_mode & 0xf0 ) | ( le_mode & 0x0f );
 
     }
 
     le_void_t le_address_set_query( le_address_t * const le_address, le_byte_t const le_query ) {
 
-        /* reset query mode */
-        le_address->as_mode &= 0x0f;
-
         /* assign query mode */
-        le_address->as_mode |= le_query << 4;
+        le_address->as_mode = ( le_address->as_mode & 0x0f ) | ( le_query << 4 );
 
     }
 
@@ -595,8 +547,17 @@
             le_address->as_mode = le_base[1];
             le_address->as_span = le_base[2];
 
-            /* serialise address digits */
-            memcpy( le_address->as_digit, le_base + LE_ARRAY_ADDR_DESC, _LE_USE_DEPTH );
+            /* update serial base */
+            le_base += LE_ARRAY_ADDR_DESC;
+
+            /* address digit micro-compression */
+            for ( le_size_t le_msb = ( _LE_USE_DEPTH >> 1 ), le_lsb = 0; le_msb < _LE_USE_DEPTH; le_msb ++, le_lsb ++, le_base ++ ) {
+
+                /* inflate address digit */
+                le_address->as_digit[le_msb] = ( * le_base ) >> 4;
+                le_address->as_digit[le_lsb] = ( * le_base ) & 0x0f;
+
+            }
 
         } else {
 
@@ -613,8 +574,16 @@
             le_base[1] = le_address->as_mode;
             le_base[2] = le_address->as_span;
 
-            /* serialise address digits */
-            memcpy( le_base + LE_ARRAY_ADDR_DESC, le_address->as_digit, _LE_USE_DEPTH );
+            /* update serial base */
+            le_base += LE_ARRAY_ADDR_DESC;
+
+            /* address digit micro-compression */
+            for ( le_size_t le_msb = ( _LE_USE_DEPTH >> 1 ), le_lsb = 0; le_msb < _LE_USE_DEPTH; le_msb ++, le_lsb ++, le_base ++ ) {
+
+                /* deflate address digits */
+                ( * le_base ) = ( le_address->as_digit[le_msb] << 4 ) | ( le_address->as_digit[le_lsb] );
+
+            }
 
         }
 

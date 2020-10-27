@@ -125,6 +125,9 @@
     # error "_LE_USE_OFFSET range is [2,7]"
     # endif
     # define _LE_USE_DEPTH       ( 40 )
+    # if ( _LE_USE_DEPTH % 2 != 0 )
+    # error "_LE_USE_DEPTH must be multiple of two"
+    # endif
     # define _LE_USE_TIMES       ( 3 )
     # define _LE_USE_DATA        ( 4 )
     # define _LE_USE_PORT        ( 11027 )
@@ -273,7 +276,7 @@
      *  This function answers \b _LE_TRUE if the provided path points to a file
      *  or a directory that exists. The function returns \b _LE_FALSE otherwise.
      *
-     *  \param le_path Entity path
+     *  \param le_path Entity (file or directory) path
      *
      *  \return Returns _LE_TRUE if element exists, _LE_FALSE otherwise
      */
