@@ -612,6 +612,9 @@
         le_size_t le_mstack = 0;
         le_size_t le_pstack = 0;
 
+        /* forced rounding address */
+        le_address_t le_round = LE_ADDRESS_C_SIZE( le_door->dr_scfg );
+
         /* size variable */
         le_size_t le_chunk = LE_ARRAY_DATA * LE_UV3_CHUNK;
 
@@ -655,6 +658,17 @@
                             le_edge = ( le_head = NULL );
 
                         }
+
+                    }
+
+                    /* forced rouding - experimental */
+                    if ( le_head != NULL ) {
+
+                        /* convert position to index */
+                        le_address_set_pose( & le_round, ( le_real_t * ) le_head );
+
+                        /* convert index to position */
+                        le_address_get_pose( & le_round, ( le_real_t * ) le_head );
 
                     }
 
