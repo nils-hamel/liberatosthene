@@ -1489,7 +1489,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* fatal error */
@@ -1545,7 +1545,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* service resiliance */
@@ -1572,7 +1572,7 @@
 
                     /* fatal error tracking */
                     # ifdef _LE_FATAL
-                    fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                    fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
                     /* service resiliance */
@@ -1602,7 +1602,7 @@
 
             /* fatal error tracking */
             # ifdef _LE_FATAL
-            fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+            fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
             /* fatal error */
@@ -1712,7 +1712,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* fatal error */
@@ -1728,7 +1728,7 @@
 
                     /* fatal error tracking */
                     # ifdef _LE_FATAL
-                    fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                    fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
                     /* fatal error */
@@ -1790,7 +1790,7 @@
 
             /* fatal error tracking */
             # ifdef _LE_FATAL
-            fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+            fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
             /* fatal error */
@@ -1806,7 +1806,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "Fatal : %s at line %d\n", __FILE__, __LINE__ );
+                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* fatal error */

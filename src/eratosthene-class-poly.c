@@ -122,6 +122,11 @@
             /* update memory */
             if ( le_poly_set_memory( le_poly, le_poly->pc_size + LE_POLY_STEP ) != LE_ERROR_SUCCESS ) {
 
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
                 /* send message */
                 return( LE_ERROR_MEMORY );
 
@@ -150,6 +155,11 @@
 
         /* re-allocate memory */
         if ( ( le_swap = realloc( le_poly->pc_link, ( le_size * _LE_USE_OFFSET ) + LE_CLASS_PADDING ) ) == NULL ) {
+
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
             return( LE_ERROR_MEMORY );

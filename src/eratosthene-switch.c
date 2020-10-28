@@ -722,48 +722,48 @@
                 /* query and check door */
                 if ( ( le_pdoor = le_switch_get_query( le_switch, & le_addr, 0 ) ) != NULL ) {
 
-                    /* check mono-vertex detection */
-                    if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
+                    /* query and check door */
+                    if ( ( le_sdoor = le_switch_get_query( le_switch, & le_addr, 1 ) ) != NULL ) {
 
-                        /* gathering process - mono-vertex */
-                        le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+                        /* check mono-vertex detection */
+                        if ( le_door_get_mono( le_pdoor ) == _LE_TRUE ) {
 
-                    }
+                            /* gathering process - mono-vertex */
+                            le_door_io_mono_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
 
-                    /* check poly-vertex detection */
-                    if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+                        }
 
-                        /* gathering process - poly-vertex */
-                        le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+                        /* check mono-vertex detection */
+                        if ( le_door_get_mono( le_sdoor ) == _LE_TRUE ) {
+
+                            /* gathering process - mono-vertex */
+                            le_door_io_mono_gather( le_sdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                        }
+
+                        /* check poly-vertex detection */
+                        if ( le_door_get_poly( le_pdoor ) == _LE_TRUE ) {
+
+                            /* gathering process - poly-vertex */
+                            le_door_io_poly_gather( le_pdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                        }
+
+                        /* check poly-vertex detection */
+                        if ( le_door_get_poly( le_sdoor ) == _LE_TRUE ) {
+
+                            /* gathering process - poly-vertex */
+                            le_door_io_poly_gather( le_sdoor, & le_addr, le_size, le_span, le_array + 1 );
+
+                        }
+
+                        /* door stream management - dev.note : symmetry fault */
+                        le_door_set_stream( le_sdoor, LE_DOOR_CLOSE );
 
                     }
 
                     /* door stream management - dev.note : symmetry fault */
                     le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
-
-                }
-
-                /* query and check door */
-                if ( ( le_sdoor = le_switch_get_query( le_switch, & le_addr, 1 ) ) != NULL ) {
-
-                    /* check mono-vertex detection */
-                    if ( le_door_get_mono( le_sdoor ) == _LE_TRUE ) {
-
-                        /* gathering process - mono-vertex */
-                        le_door_io_mono_gather( le_sdoor, & le_addr, le_size, le_span, le_array + 1 );
-
-                    }
-
-                    /* check poly-vertex detection */
-                    if ( le_door_get_poly( le_sdoor ) == _LE_TRUE ) {
-
-                        /* gathering process - poly-vertex */
-                        le_door_io_poly_gather( le_sdoor, & le_addr, le_size, le_span, le_array + 1 );
-
-                    }
-
-                    /* door stream management - dev.note : symmetry fault */
-                    le_door_set_stream( le_sdoor, LE_DOOR_CLOSE );
 
                 }
 

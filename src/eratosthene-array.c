@@ -121,6 +121,11 @@
         /* reallocate array memory */
         if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_array->ar_rsize += le_length ) ) == NULL ) {
 
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
+
             /* restore array size */
             le_array->ar_rsize -= LE_ARRAY_STEP;
 
@@ -164,6 +169,11 @@
 
         /* allocate array memory */
         if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_real ) ) == NULL ) {
+
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
             return( _LE_FALSE );
