@@ -763,7 +763,7 @@
                     }
 
                     /* door stream management - dev.note : symmetry fault */
-                    le_door_set_stream( le_pdoor, LE_DOOR_CLOSE );
+                    le_door_set_stream( le_sdoor, LE_DOOR_CLOSE );
 
                 }
 
