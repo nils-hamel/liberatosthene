@@ -39,3 +39,22 @@
         } else { return( _LE_FALSE ); }
 
     }
+
+    le_size_t le_get_ideal( le_size_t le_size ) {
+
+        /* returned value */
+        le_size_t le_return = 1;
+
+        /* compute integer log-two */
+        while ( le_size > 0 ) {
+
+            /* update two-order */
+            le_size   >>= 1;
+            le_return <<= 1;
+
+        }
+
+        /* clamp and return value */
+        return( le_return < _LE_USE_ALLOC ? _LE_USE_ALLOC : le_return );
+
+    }

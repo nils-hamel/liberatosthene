@@ -107,7 +107,16 @@
     header - preprocessor definitions
  */
 
-    /* debug mode */
+    /*! Debug definition : If this define is set, the code is compiled including
+     *  fatal error tracking messages. these messages are output in to standard
+     *  error stream.
+     *  
+     *  A fatal error is defined in two different ways : A situation that should
+     *  never append, meaning that a programming failure is hold by the code
+     *  itself. The second is a situation where the code performs well but fails
+     *  due to local ressource access, such as memory allocation or file input
+     *  output failure or network failure.
+     */
     # define _LE_FATAL
 
     /* boolean values */
@@ -135,6 +144,7 @@
     # define _LE_USE_RETRY       ( 3 )
     # define _LE_USE_ARRAY       ( 4 )
     # define _LE_USE_PATH        ( PATH_MAX + FILENAME_MAX )
+    # define _LE_USE_ALLOC       ( 1 << 20 )
 
     /* define types */
     # define _LE_VOID            void
@@ -282,6 +292,10 @@
      */
 
     le_enum_t le_get_exist( le_char_t const * const le_path );
+
+    /*! \brief accessor methods */
+
+    le_size_t le_get_ideal( le_size_t le_size );
 
 /*
     header - C/C++ compatibility

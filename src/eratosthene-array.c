@@ -107,27 +107,30 @@
         /* swap pointer variables */
         le_byte_t * le_swap = NULL;
 
+        /* target size */
+        le_size_t le_real = ( le_array->ar_vsize + le_length ) + LE_ARRAY_HEADER;
+
+        /* update array size */
+        le_array->ar_vsize += le_length;
+
         /* check requirements */
-        if ( le_array->ar_rsize >= ( ( le_array->ar_vsize += le_length ) + LE_ARRAY_HEADER ) ) {
+        if ( le_array->ar_rsize >= le_real ) {
 
             /* send message */
             return( _LE_TRUE );
 
         }
 
-        /* compute size correction */
-        le_length = ( ( le_length / LE_ARRAY_STEP ) + 1 ) * LE_ARRAY_STEP;
+        /* compute ideal size */
+        le_real = le_get_ideal( le_real );
 
         /* reallocate array memory */
-        if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_array->ar_rsize += le_length ) ) == NULL ) {
+        if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_real ) ) == NULL ) {
 
             /* critical error tracking */
             # ifdef _LE_FATAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
-
-            /* restore array size */
-            le_array->ar_rsize -= LE_ARRAY_STEP;
 
             /* restore array size */
             le_array->ar_vsize -= le_length;
@@ -142,6 +145,9 @@
 
         /* update structure references */
         le_array->ar_vbyte = le_array->ar_rbyte + LE_ARRAY_HEADER;
+
+        /* update array size */
+        le_array->ar_rsize = le_real;
 
         /* send message */
         return( _LE_TRUE );
