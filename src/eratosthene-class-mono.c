@@ -103,18 +103,35 @@
     le_enum_t le_mono_io_read( le_mono_t * const le_mono, le_size_t const le_offset, le_file_t const le_stream ) {
 
         /* stream offset */
-        fseek( le_stream, le_offset, SEEK_SET );
+        if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
-        /* read class extended header */
-        if ( fread( le_mono->mc_data, sizeof( le_byte_t ), LE_MONO_EXTEND, le_stream ) != LE_MONO_EXTEND ) {
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
-            return( LE_ERROR_IO_READ );
+            return( LE_ERROR_IO_SEEK );
 
         } else {
 
-            /* read class and broadcast message */
-            return( le_class_io_read( le_mono->mc_data + LE_MONO_HEADER, le_stream ) );
+            /* read class extended header */
+            if ( fread( le_mono->mc_data, sizeof( le_byte_t ), LE_MONO_EXTEND, le_stream ) != LE_MONO_EXTEND ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
+                /* send message */
+                return( LE_ERROR_IO_READ );
+
+            } else {
+
+                /* read class and broadcast message */
+                return( le_class_io_read( le_mono->mc_data + LE_MONO_HEADER, le_stream ) );
+
+            }
 
         }
 
@@ -123,18 +140,35 @@
     le_enum_t le_mono_io_read_fast( le_mono_t * const le_mono, le_size_t const le_offset, le_file_t const le_stream ) {
 
         /* stream offset */
-        fseek( le_stream, le_offset + LE_MONO_HEADER, SEEK_SET );
+        if ( fseek( le_stream, le_offset + LE_MONO_HEADER, SEEK_SET ) != 0 ) {
 
-        /* read class descriptor */
-        if ( fread( le_mono->mc_data + LE_MONO_HEADER, sizeof( le_byte_t ), LE_CLASS_HEADER, le_stream ) != LE_CLASS_HEADER ) {
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
-            return( LE_ERROR_IO_READ );
+            return( LE_ERROR_IO_SEEK );
 
         } else {
 
-            /* read class and broadcast message */
-            return( le_class_io_read( le_mono->mc_data + LE_MONO_HEADER, le_stream ) );
+            /* read class descriptor */
+            if ( fread( le_mono->mc_data + LE_MONO_HEADER, sizeof( le_byte_t ), LE_CLASS_HEADER, le_stream ) != LE_CLASS_HEADER ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
+                /* send message */
+                return( LE_ERROR_IO_READ );
+
+            } else {
+
+                /* read class and broadcast message */
+                return( le_class_io_read( le_mono->mc_data + LE_MONO_HEADER, le_stream ) );
+
+            }
 
         }
 
@@ -158,6 +192,11 @@
         /* write class extended header */
         if ( fwrite( le_mono->mc_data, sizeof( le_byte_t ), LE_MONO_EXTEND, le_stream ) != LE_MONO_EXTEND ) {
 
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
+
             /* send message */
             return( LE_ERROR_IO_WRITE );
 
@@ -173,28 +212,57 @@
     le_size_t le_mono_io_offset( le_size_t const le_offset, le_size_t const le_index, le_file_t const le_stream ) {
 
         /* stream offset */
-        fseek( le_stream, le_offset + LE_MONO_HEADER, SEEK_SET );
+        if ( fseek( le_stream, le_offset + LE_MONO_HEADER, SEEK_SET ) != 0 ) {
 
-        /* extract and return offset */
-        return( le_class_io_offset( le_index, le_stream ) );
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
+
+            /* send message */
+            return( LE_ERROR_IO_SEEK );
+
+        } else {
+
+            /* extract and return offset */
+            return( le_class_io_offset( le_index, le_stream ) );
+
+        }
 
     }
 
     le_enum_t le_mono_io_data( le_size_t const le_offset, le_byte_t * const le_data, le_file_t const le_stream ) {
 
         /* stream offset */
-        fseek( le_stream, le_offset, SEEK_SET );
+        if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
-        /* import data */
-        if ( fread( ( le_void_t * ) le_data, sizeof( le_byte_t ), LE_MONO_HEADER, le_stream ) != LE_MONO_HEADER ) {
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
-            return( LE_ERROR_IO_READ );
+            return( LE_ERROR_IO_SEEK );
 
         } else {
 
-            /* send message */
-            return( LE_ERROR_SUCCESS );
+            /* import data */
+            if ( fread( ( le_void_t * ) le_data, sizeof( le_byte_t ), LE_MONO_HEADER, le_stream ) != LE_MONO_HEADER ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
+                /* send message */
+                return( LE_ERROR_IO_READ );
+
+            } else {
+
+                /* send message */
+                return( LE_ERROR_SUCCESS );
+
+            }
 
         }
 
