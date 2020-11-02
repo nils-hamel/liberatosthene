@@ -122,11 +122,6 @@
             /* update memory */
             if ( le_poly_set_memory( le_poly, le_poly->pc_size + LE_POLY_STEP ) != LE_ERROR_SUCCESS ) {
 
-                /* critical error tracking */
-                # ifdef _LE_FATAL
-                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
-                # endif
-
                 /* send message */
                 return( LE_ERROR_MEMORY );
 
@@ -199,45 +194,67 @@
         le_size_t le_size = 0;
 
         /* stream offset */
-        fseek( le_stream, le_offset, SEEK_SET );
+        if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
-        /* read class extended header */
-        if ( fread( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
-            return( LE_ERROR_IO_READ );
+            return( LE_ERROR_IO_SEEK );
 
         } else {
 
-            /* read class */
-            if ( le_class_io_read( le_poly->pc_data + LE_POLY_HEADER, le_stream ) != LE_ERROR_SUCCESS ) {
+            /* read class extended header */
+            if ( fread( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
 
                 /* send message */
                 return( LE_ERROR_IO_READ );
 
             } else {
 
-                /* extract size */
-                le_size = le_poly_get_size( le_poly );
-
-                /* memory management */
-                if ( le_poly_set_memory( le_poly, le_size ) != LE_ERROR_SUCCESS ) {
+                /* read class */
+                if ( le_class_io_read( le_poly->pc_data + LE_POLY_HEADER, le_stream ) != LE_ERROR_SUCCESS ) {
 
                     /* send message */
-                    return( LE_ERROR_MEMORY );
+                    return( LE_ERROR_IO_READ );
 
                 } else {
 
-                    /* read class links */
-                    if ( fread( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
+                    /* extract size */
+                    le_size = le_poly_get_size( le_poly );
+
+                    /* memory management */
+                    if ( le_poly_set_memory( le_poly, le_size ) != LE_ERROR_SUCCESS ) {
 
                         /* send message */
-                        return( LE_ERROR_IO_READ );
+                        return( LE_ERROR_MEMORY );
 
                     } else {
 
-                        /* send message */
-                        return( LE_ERROR_SUCCESS );
+                        /* read class links */
+                        if ( fread( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
+
+                            /* critical error tracking */
+                            # ifdef _LE_FATAL
+                            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                            # endif
+
+                            /* send message */
+                            return( LE_ERROR_IO_READ );
+
+                        } else {
+
+                            /* send message */
+                            return( LE_ERROR_SUCCESS );
+
+                        }
 
                     }
 
@@ -252,18 +269,30 @@
     le_enum_t le_poly_io_read_fast( le_poly_t * const le_poly, le_size_t const le_offset, le_file_t const le_stream ) {
 
         /* stream offset */
-        fseek( le_stream, le_offset, SEEK_SET );
+        if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
-        /* read class extended header */
-        if ( fread( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send message */
-            return( LE_ERROR_IO_READ );
+            return( LE_ERROR_IO_SEEK );
 
         } else {
 
-            /* read class and broadcast message */
-            return( le_class_io_read( le_poly->pc_data + LE_POLY_HEADER, le_stream ) );
+            /* read class extended header */
+            if ( fread( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
+
+                /* send message */
+                return( LE_ERROR_IO_READ );
+
+            } else {
+
+                /* read class and broadcast message */
+                return( le_class_io_read( le_poly->pc_data + LE_POLY_HEADER, le_stream ) );
+
+            }
 
         }
 
@@ -284,6 +313,11 @@
 
             /* read class links */
             if ( fread( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
 
                 /* send message */
                 return( LE_ERROR_IO_READ );
@@ -308,12 +342,27 @@
         if ( le_offset != _LE_OFFS_NULL ) {
 
             /* stream offset */
-            fseek( le_stream, le_offset, SEEK_SET );
+            if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
+                /* send message */
+                return( LE_ERROR_IO_SEEK );
+
+            }
 
         }
 
         /* write class extended header */
         if ( fwrite( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
+
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send messsage */
             return( LE_ERROR_IO_WRITE );
@@ -330,6 +379,11 @@
 
                 /* write class links */
                 if ( fwrite( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
+
+                    /* critical error tracking */
+                    # ifdef _LE_FATAL
+                    fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                    # endif
 
                     /* send message */
                     return( LE_ERROR_IO_WRITE );
@@ -350,10 +404,22 @@
     le_size_t le_poly_io_offset( le_size_t const le_offset, le_size_t const le_index, le_file_t const le_stream ) {
 
         /* stream offset */
-        fseek( le_stream, le_offset + LE_POLY_HEADER, SEEK_SET );
+        if ( fseek( le_stream, le_offset + LE_POLY_HEADER, SEEK_SET ) != 0 ) {
 
-        /* extract and return offset */
-        return( le_class_io_offset( le_index, le_stream ) );
+            /* critical error tracking */
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
+
+            /* send message */
+            return( LE_ERROR_IO_SEEK );
+
+        } else {
+
+            /* extract and return offset */
+            return( le_class_io_offset( le_index, le_stream ) );
+
+        }
 
     }
 

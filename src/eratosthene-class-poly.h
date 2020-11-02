@@ -71,7 +71,7 @@
     # define LE_POLY_MEMORY ( LE_POLY_HEADER + LE_POLY_CLASS )
 
     /* define class memory step */
-    # define LE_POLY_STEP   ( 16 )
+    # define LE_POLY_STEP   ( 1024 )
 
 /*
     header - preprocessor macros

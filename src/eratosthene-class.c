@@ -232,9 +232,9 @@
         if ( fread( & le_pattern, sizeof( le_byte_t ), 1, le_stream ) != 1 ) {
 
             /* critical error tracking */
-            //# ifdef _LE_FATAL
-            //fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
-            //# endif
+            # ifdef _LE_FATAL
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            # endif
 
             /* send null offset */
             return( le_offset );

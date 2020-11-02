@@ -1407,6 +1407,20 @@
         /* reset offset */
         le_door->dr_moff = 0;
 
+        /* seek end of first scale file */
+        fseek( le_door->dr_macc[0], 0, SEEK_END );
+
+        /* detect empty mother-cell */
+        if ( ftell( le_door->dr_macc[0] ) == 0 ) {
+
+            /* assign null offset */
+            le_door->dr_moff = _LE_OFFS_NULL;
+
+            /* send message */
+            return( _LE_FALSE );
+
+        }
+
         /* follow offset */
         do {
 
@@ -1439,6 +1453,20 @@
 
         /* reset offset */
         le_door->dr_poff = 0;
+
+        /* seek end of first scale file */
+        fseek( le_door->dr_pacc[0], 0, SEEK_END );
+
+        /* detect empty mother-cell */
+        if ( ftell( le_door->dr_pacc[0] ) == 0 ) {
+
+            /* assign null offset */
+            le_door->dr_poff = _LE_OFFS_NULL;
+
+            /* send message */
+            return( _LE_FALSE );
+
+        }
 
         /* follow offset */
         do {
@@ -1489,7 +1517,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* fatal error */
@@ -1545,7 +1573,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* service resiliance */
@@ -1572,7 +1600,7 @@
 
                     /* fatal error tracking */
                     # ifdef _LE_FATAL
-                    fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                    fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
                     /* service resiliance */
@@ -1602,7 +1630,7 @@
 
             /* fatal error tracking */
             # ifdef _LE_FATAL
-            fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
             /* fatal error */
@@ -1712,7 +1740,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* fatal error */
@@ -1728,7 +1756,7 @@
 
                     /* fatal error tracking */
                     # ifdef _LE_FATAL
-                    fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                    fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
                     /* fatal error */
@@ -1790,7 +1818,7 @@
 
             /* fatal error tracking */
             # ifdef _LE_FATAL
-            fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
             /* fatal error */
@@ -1806,7 +1834,7 @@
 
                 /* fatal error tracking */
                 # ifdef _LE_FATAL
-                fprintf( stderr, "E, F, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
                 /* fatal error */

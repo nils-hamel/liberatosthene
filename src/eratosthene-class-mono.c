@@ -180,7 +180,17 @@
         if ( le_offset != _LE_OFFS_NULL ) {
 
             /* stream offset */
-            fseek( le_stream, le_offset, SEEK_SET );
+            if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
+                /* send message */
+                return( LE_ERROR_IO_SEEK );
+
+            }
 
         }
 
