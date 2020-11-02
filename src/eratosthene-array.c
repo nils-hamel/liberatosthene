@@ -122,7 +122,7 @@
         }
 
         /* compute ideal size */
-        le_real = le_get_ideal( le_real );
+        le_real = le_get_ideal( le_real, 1 << 20 );
 
         /* reallocate array memory */
         if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_real ) ) == NULL ) {

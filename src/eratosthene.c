@@ -40,7 +40,7 @@
 
     }
 
-    le_size_t le_get_ideal( le_size_t le_size ) {
+    le_size_t le_get_ideal( le_size_t le_size, le_size_t le_clamp ) {
 
         /* returned value */
         le_size_t le_return = 1;
@@ -55,6 +55,6 @@
         }
 
         /* clamp and return value */
-        return( le_return < _LE_USE_ALLOC ? _LE_USE_ALLOC : le_return );
+        return( le_return < le_clamp ? le_clamp : le_return );
 
     }

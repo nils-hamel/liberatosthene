@@ -117,10 +117,10 @@
         le_size_t * le_offset = NULL;
 
         /* check memory allocation */
-        if ( le_size == le_poly->pc_size ) {
+        if ( ( le_size + 1 ) >= le_poly->pc_size ) {
 
             /* update memory */
-            if ( le_poly_set_memory( le_poly, le_poly->pc_size + LE_POLY_STEP ) != LE_ERROR_SUCCESS ) {
+            if ( le_poly_set_memory( le_poly, le_get_ideal( ( le_size + 1 ) * _LE_USE_OFFSET, 1 << 10 ) / _LE_USE_OFFSET ) != LE_ERROR_SUCCESS ) {
 
                 /* send message */
                 return( LE_ERROR_MEMORY );

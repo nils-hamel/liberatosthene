@@ -135,7 +135,6 @@
     # define _LE_USE_RETRY       ( 3 )
     # define _LE_USE_ARRAY       ( 4 )
     # define _LE_USE_PATH        ( PATH_MAX + FILENAME_MAX )
-    # define _LE_USE_ALLOC       ( 1 << 20 )
 
     /* define types */
     # define _LE_VOID            void
@@ -286,7 +285,7 @@
 
     /*! \brief accessor methods */
 
-    le_size_t le_get_ideal( le_size_t le_size );
+    le_size_t le_get_ideal( le_size_t le_size, le_size_t le_clamp );
 
 /*
     header - C/C++ compatibility
