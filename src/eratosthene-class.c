@@ -25,13 +25,16 @@
  */
 
     /* class size array */
-    static const le_byte_t le_class_size[LE_CLASS_COUNT] = LE_CLASS_SIZE;
+    static const le_byte_t le_class_size[LE_CLASS_COUNT] = LE_CLASS_ACCESS_SIZE;
 
     /* direct access array */
-    static const le_byte_t le_class_direct[LE_CLASS_COUNT][_LE_USE_BASE] = LE_CLASS_DIRECT;
+    static const le_byte_t le_class_direct[LE_CLASS_COUNT][_LE_USE_BASE] = LE_CLASS_ACCESS_DIRECT;
+
+    /* direct access array - optimized */
+    static const le_byte_t le_class_fast[LE_CLASS_COUNT][_LE_USE_BASE] = LE_CLASS_ACCESS_FAST;
 
     /* invert access array */
-    static const le_byte_t le_class_invert[LE_CLASS_COUNT][_LE_USE_BASE] = LE_CLASS_INVERT;
+    static const le_byte_t le_class_invert[LE_CLASS_COUNT][_LE_USE_BASE] = LE_CLASS_ACCESS_INVERT;
 
 /*
     source - constructor/destructor methods
@@ -51,23 +54,18 @@
     le_size_t le_class_get_offset( le_byte_t const * le_class, le_size_t const le_index ) {
 
         /* offset location variable */
-        le_size_t le_location = le_class_direct[ ( * le_class ) ][ le_index ];
+        le_size_t le_location = le_class_fast[ ( * le_class ) ][ le_index ];
 
         /* check offset availability */
-        if ( le_location == 0xff ) {
+        if ( le_location == LE_CLASS_NULL ) {
 
             /* return null offset */
             return( _LE_OFFS_NULL );
 
-        } else {
-
-            /* move pointer to offset position */
-            le_class += le_location * _LE_USE_OFFSET + sizeof( le_byte_t );
-
-            /* extract and return offset */
-            return( le_class_mac_cast( le_class ) & _LE_OFFS_NULL );
-
         }
+
+        /* extract and return offset */
+        return( le_class_mac_cast( le_class += le_location ) & _LE_OFFS_NULL );
 
     }
 
@@ -94,6 +92,13 @@
 
                 /* distinguish append from insertion */
                 if ( ( * le_class ) > le_pattern ) {
+
+                    /* devnote : insertion should ne be required any more as
+                     * vertex sorting ensures ordered injection of classes.
+                     *
+                     * as the segment is removed, the invert and non-optimised
+                     * access arrays can be removed.
+                     */
 
                     /* push class descriptor with addition of offset marker */
                     le_pattern |= ( * le_class );
@@ -131,7 +136,7 @@
         }
 
         /* move pointer to offset position */
-        le_class += ( le_class_direct[ ( * le_class ) ][le_index] ) * _LE_USE_OFFSET + sizeof( le_byte_t );
+        le_class += le_class_fast[ ( * le_class ) ][ le_index ];
 
         /* assign offset value */
         le_class_mac_cast( le_class ) = ( le_class_mac_cast( le_class ) & ( ~ _LE_OFFS_NULL ) ) | ( le_offset & _LE_OFFS_NULL );
@@ -157,6 +162,11 @@
 
             /* read class offsets */
             if ( fread( le_class, _LE_USE_OFFSET, le_read, le_stream ) != le_read ) {
+
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
 
                 /* send message */
                 return( LE_ERROR_IO_READ );
@@ -188,6 +198,11 @@
             /* write class offsets */
             if ( fwrite( le_class, _LE_USE_OFFSET, le_write, le_stream ) != le_write ) {
 
+                /* critical error tracking */
+                # ifdef _LE_FATAL
+                fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                # endif
+
                 /* send message */
                 return( LE_ERROR_IO_WRITE );
 
@@ -216,13 +231,18 @@
         /* read class descriptor */
         if ( fread( & le_pattern, sizeof( le_byte_t ), 1, le_stream ) != 1 ) {
 
+            /* critical error tracking */
+            //# ifdef _LE_FATAL
+            //fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+            //# endif
+
             /* send null offset */
             return( le_offset );
 
         } else {
 
             /* check offset availability */
-            if ( ( le_location = le_class_direct[ le_pattern ][ le_index ] ) == 0xff ) {
+            if ( ( le_location = le_class_fast[ le_pattern ][ le_index ] ) == LE_CLASS_NULL ) {
 
                 /* send null offset */
                 return( le_offset );
@@ -230,18 +250,35 @@
             } else {
 
                 /* move to offset location */
-                fseek( le_stream, le_location * _LE_USE_OFFSET, SEEK_CUR );
+                if ( fseek( le_stream, le_location - sizeof( le_byte_t ), SEEK_CUR ) != 0 ) {
 
-                /* read offset value */
-                if ( fread( & le_offset, sizeof( le_byte_t ), _LE_USE_OFFSET, le_stream ) != _LE_USE_OFFSET ) {
+                    /* critical error tracking */
+                    # ifdef _LE_FATAL
+                    fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                    # endif
 
                     /* send null offset */
                     return( le_offset );
 
                 } else {
 
-                    /* send read offset */
-                    return( le_offset );
+                    /* read offset value */
+                    if ( fread( & le_offset, sizeof( le_byte_t ), _LE_USE_OFFSET, le_stream ) != _LE_USE_OFFSET ) {
+
+                        /* critical error tracking */
+                        # ifdef _LE_FATAL
+                        fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
+                        # endif
+
+                        /* send null offset */
+                        return( le_offset );
+
+                    } else {
+
+                        /* send read offset */
+                        return( le_offset );
+
+                    }
 
                 }
 
