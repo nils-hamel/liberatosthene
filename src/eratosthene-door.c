@@ -1516,7 +1516,7 @@
             if ( le_mono_io_read_fast( & le_class, le_door->dr_moff, * ( le_door->dr_macc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
                 /* fatal error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -1572,7 +1572,7 @@
             if ( fread( le_array_mac_back( le_array, le_read ), sizeof( le_byte_t ), le_read, le_door->dr_pdat ) != le_read ) {
 
                 /* fatal error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -1599,7 +1599,7 @@
                 if ( fread( le_array_mac_back( le_array, le_read ), sizeof( le_byte_t ), le_read, le_door->dr_pdat ) != le_read ) {
 
                     /* fatal error tracking */
-                    # ifdef _LE_FATAL
+                    # ifdef _LE_CRITICAL
                     fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
@@ -1629,7 +1629,7 @@
         if ( le_poly_io_read_fast( & le_class, le_door->dr_poff, * ( le_door->dr_pacc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
             /* fatal error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -1739,7 +1739,7 @@
             if ( le_mono_io_read_fast( & le_pclass, le_pdoor->dr_moff, * ( le_pdoor->dr_macc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
                 /* fatal error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -1755,7 +1755,7 @@
                 if ( le_mono_io_read_fast( & le_sclass, le_sdoor->dr_moff, * ( le_sdoor->dr_macc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
                     /* fatal error tracking */
-                    # ifdef _LE_FATAL
+                    # ifdef _LE_CRITICAL
                     fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
@@ -1817,7 +1817,7 @@
         if ( le_poly_io_read_fast( & le_pclass, le_pdoor->dr_poff, * ( le_pdoor->dr_pacc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
             /* fatal error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -1833,7 +1833,7 @@
             if ( le_poly_io_read_fast( & le_sclass, le_sdoor->dr_poff, * ( le_sdoor->dr_pacc + le_parse ) ) != LE_ERROR_SUCCESS ) {
 
                 /* fatal error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 

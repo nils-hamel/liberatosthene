@@ -164,7 +164,7 @@
             if ( fread( le_class, _LE_USE_OFFSET, le_read, le_stream ) != le_read ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -199,7 +199,7 @@
             if ( fwrite( le_class, _LE_USE_OFFSET, le_write, le_stream ) != le_write ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -232,7 +232,7 @@
         if ( fread( & le_pattern, sizeof( le_byte_t ), 1, le_stream ) != 1 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -253,7 +253,7 @@
                 if ( fseek( le_stream, le_location - sizeof( le_byte_t ), SEEK_CUR ) != 0 ) {
 
                     /* critical error tracking */
-                    # ifdef _LE_FATAL
+                    # ifdef _LE_CRITICAL
                     fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
@@ -266,7 +266,7 @@
                     if ( fread( & le_offset, sizeof( le_byte_t ), _LE_USE_OFFSET, le_stream ) != _LE_USE_OFFSET ) {
 
                         /* critical error tracking */
-                        # ifdef _LE_FATAL
+                        # ifdef _LE_CRITICAL
                         fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                         # endif
 

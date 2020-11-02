@@ -107,17 +107,8 @@
     header - preprocessor definitions
  */
 
-    /*! Debug definition : If this define is set, the code is compiled including
-     *  fatal error tracking messages. these messages are output in to standard
-     *  error stream.
-     *  
-     *  A fatal error is defined in two different ways : A situation that should
-     *  never append, meaning that a programming failure is hold by the code
-     *  itself. The second is a situation where the code performs well but fails
-     *  due to local ressource access, such as memory allocation or file input
-     *  output failure or network failure.
-     */
-    # define _LE_FATAL
+    /* critical error tracking */
+    # define _LE_CRITICAL
 
     /* boolean values */
     # define _LE_FALSE           ( 0 )

@@ -106,7 +106,7 @@
         if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -119,7 +119,7 @@
             if ( fread( le_mono->mc_data, sizeof( le_byte_t ), LE_MONO_EXTEND, le_stream ) != LE_MONO_EXTEND ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -143,7 +143,7 @@
         if ( fseek( le_stream, le_offset + LE_MONO_HEADER, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -156,7 +156,7 @@
             if ( fread( le_mono->mc_data + LE_MONO_HEADER, sizeof( le_byte_t ), LE_CLASS_HEADER, le_stream ) != LE_CLASS_HEADER ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -183,7 +183,7 @@
             if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -203,7 +203,7 @@
         if ( fwrite( le_mono->mc_data, sizeof( le_byte_t ), LE_MONO_EXTEND, le_stream ) != LE_MONO_EXTEND ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -225,7 +225,7 @@
         if ( fseek( le_stream, le_offset + LE_MONO_HEADER, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -247,7 +247,7 @@
         if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -260,7 +260,7 @@
             if ( fread( ( le_void_t * ) le_data, sizeof( le_byte_t ), LE_MONO_HEADER, le_stream ) != LE_MONO_HEADER ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 

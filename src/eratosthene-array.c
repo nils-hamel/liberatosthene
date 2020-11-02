@@ -128,7 +128,7 @@
         if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_real ) ) == NULL ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -177,7 +177,7 @@
         if ( ( le_swap = ( le_byte_t * ) realloc( ( le_void_t * ) le_array->ar_rbyte, le_real ) ) == NULL ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 

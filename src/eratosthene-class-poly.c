@@ -152,7 +152,7 @@
         if ( ( le_swap = realloc( le_poly->pc_link, ( le_size * _LE_USE_OFFSET ) + LE_CLASS_PADDING ) ) == NULL ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -197,7 +197,7 @@
         if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -210,7 +210,7 @@
             if ( fread( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -242,7 +242,7 @@
                         if ( fread( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
 
                             /* critical error tracking */
-                            # ifdef _LE_FATAL
+                            # ifdef _LE_CRITICAL
                             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                             # endif
 
@@ -272,7 +272,7 @@
         if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -315,7 +315,7 @@
             if ( fread( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -345,7 +345,7 @@
             if ( fseek( le_stream, le_offset, SEEK_SET ) != 0 ) {
 
                 /* critical error tracking */
-                # ifdef _LE_FATAL
+                # ifdef _LE_CRITICAL
                 fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                 # endif
 
@@ -360,7 +360,7 @@
         if ( fwrite( le_poly->pc_data, sizeof( le_byte_t ), LE_POLY_EXTEND, le_stream ) != LE_POLY_EXTEND ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
@@ -381,7 +381,7 @@
                 if ( fwrite( le_poly->pc_link, _LE_USE_OFFSET, le_size, le_stream ) != le_size ) {
 
                     /* critical error tracking */
-                    # ifdef _LE_FATAL
+                    # ifdef _LE_CRITICAL
                     fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
                     # endif
 
@@ -407,7 +407,7 @@
         if ( fseek( le_stream, le_offset + LE_POLY_HEADER, SEEK_SET ) != 0 ) {
 
             /* critical error tracking */
-            # ifdef _LE_FATAL
+            # ifdef _LE_CRITICAL
             fprintf( stderr, "E, C, %s, %d, %li\n", __FILE__, __LINE__, pthread_self() );
             # endif
 
