@@ -35,6 +35,94 @@
     source - mutator methods
  */
 
+    le_void_t le_uv3_set_sort_circle( le_byte_t * const le_primitive, le_size_t const le_type, le_size_t const le_scfg ) {
+
+        /* minimum pointer */
+        le_byte_t * le_circle = le_primitive;
+
+        /* array pointer */
+        le_byte_t * le_head = le_primitive + LE_ARRAY_DATA;
+        le_byte_t * le_edge = le_primitive + LE_ARRAY_DATA * le_type;
+
+        /* circular buffer */
+        le_byte_t le_buffer[LE_ARRAY_DATA << 1];
+
+        /* detect minimum */
+        while ( le_head < le_edge ) {
+
+            /* minimum detection */
+            if ( le_address_get_greater( ( le_real_t * ) le_circle, ( le_real_t * ) le_head, le_scfg ) == _LE_TRUE ) {
+
+                /* update minimum pointer */
+                le_circle = le_head;
+
+            }
+
+            /* update head */
+            le_head += LE_ARRAY_DATA;
+
+        }
+
+        /* check circular permutation requirement */
+        if ( le_circle != le_primitive ) {
+
+            /* push primitive vertex */
+            memcpy( le_buffer, le_primitive, le_circle - le_primitive );
+
+            /* apply circular permutation */
+            memcpy( le_primitive, le_circle, le_edge - le_circle );
+
+            /* pop primitive vertex */
+            memcpy( le_primitive + ( le_edge - le_circle ), le_buffer, le_circle - le_primitive );
+
+        }
+
+    }
+
+    le_byte_t * le_uv3_set_sort_primitive( le_byte_t * const le_buffer, le_size_t const le_size, le_size_t const le_scfg ) {
+
+        /* primitive stack */
+        le_size_t le_stack = 1;
+
+        /* primitive type */
+        le_size_t le_type = 0;
+
+        /* buffer pointer */
+        le_byte_t * le_push = NULL;
+        le_byte_t * le_head = le_buffer;
+
+        /* parsing buffer */
+        while ( ( le_head - le_buffer ) < le_size ) {
+
+            /* stack tracking */
+            if ( ( -- le_stack ) == 0 ) {
+
+                /* check pushed head */
+                if ( ( le_push != NULL ) && ( le_type > LE_UV3_POINT ) ) {
+
+                    /* apply circular permutation */
+                    le_uv3_set_sort_circle( le_push, le_type, le_scfg );
+
+                }
+
+                /* reset stack */
+                le_stack = ( le_type = * ( le_head + LE_ARRAY_DATA_POSE ) );
+
+                /* push head */
+                le_push = le_head;
+
+            }
+
+            /* update head */
+            le_head += LE_ARRAY_DATA;
+
+        }
+
+        /* return pointer */
+        return( le_buffer );
+
+    }
+
     le_byte_t * le_uv3_set_sort( le_byte_t * const le_buffer, le_size_t const le_size, le_size_t le_memory, le_size_t const le_scfg ) {
 
         /* buffer variable */
@@ -485,6 +573,26 @@
 
         /* send message */
         return( le_message );
+
+    }
+
+    le_void_t le_uv3_io_print( le_byte_t * le_uv3, le_size_t const le_size ) {
+
+        for ( le_size_t le_parse = 0; le_parse < le_size; le_parse += LE_ARRAY_DATA ) {
+
+            fprintf( stdout, "%+e %+e %+e %02x %02x %02x %02x\n", 
+
+                ( ( le_real_t * ) ( le_uv3 + le_parse ) )[ 0],
+                ( ( le_real_t * ) ( le_uv3 + le_parse ) )[ 1],
+                ( ( le_real_t * ) ( le_uv3 + le_parse ) )[ 2],
+                ( ( le_byte_t * ) ( le_uv3 + le_parse ) )[24],
+                ( ( le_byte_t * ) ( le_uv3 + le_parse ) )[25],
+                ( ( le_byte_t * ) ( le_uv3 + le_parse ) )[26],
+                ( ( le_byte_t * ) ( le_uv3 + le_parse ) )[27]
+
+            );
+
+        }
 
     }
 

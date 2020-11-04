@@ -722,40 +722,50 @@
                     /* check index */
                     if ( ( le_stack == 0 ) && ( ( le_pindex >= le_chunk ) || ( ( le_head == NULL ) && ( le_pindex != 0 ) ) ) ) {
 
-                        /* sort chunk */
-                        if ( ( le_pbyte = le_uv3_set_sort( le_pbyte, le_pindex, le_spare, le_door->dr_scfg ) ) == NULL ) {
+                        /* sort primitive */
+                        if ( ( le_pbyte = le_uv3_set_sort_primitive( le_pbyte, le_pindex, le_door->dr_scfg ) ) == NULL ) {
 
-                            /* push message */
+                            /* send message */
                             le_message = LE_ERROR_MEMORY;
 
                         } else {
 
-                            /* compose path */
-                            sprintf( ( char * ) le_path, "%s0/2%" _LE_SIZE_P, le_door->dr_path, le_pstack ++ );
-
-                            /* create and check stream */
-                            if ( ( le_stream = fopen( ( char * ) le_path, "wb" ) ) == NULL ) {
+                            /* sort chunk */
+                            if ( ( le_pbyte = le_uv3_set_sort( le_pbyte, le_pindex, le_spare, le_door->dr_scfg ) ) == NULL ) {
 
                                 /* push message */
-                                le_message = LE_ERROR_IO_WRITE;
+                                le_message = LE_ERROR_MEMORY;
 
                             } else {
 
-                                /* export chunk */
-                                if ( fwrite( le_pbyte, sizeof( le_byte_t ), le_pindex, le_stream ) != le_pindex ) {
+                                /* compose path */
+                                sprintf( ( char * ) le_path, "%s0/2%" _LE_SIZE_P, le_door->dr_path, le_pstack ++ );
+
+                                /* create and check stream */
+                                if ( ( le_stream = fopen( ( char * ) le_path, "wb" ) ) == NULL ) {
 
                                     /* push message */
                                     le_message = LE_ERROR_IO_WRITE;
 
                                 } else {
 
-                                    /* reset index */
-                                    le_pindex = 0;
+                                    /* export chunk */
+                                    if ( fwrite( le_pbyte, sizeof( le_byte_t ), le_pindex, le_stream ) != le_pindex ) {
+
+                                        /* push message */
+                                        le_message = LE_ERROR_IO_WRITE;
+
+                                    } else {
+
+                                        /* reset index */
+                                        le_pindex = 0;
+
+                                    }
+
+                                    /* delete stream */
+                                    fclose( le_stream );
 
                                 }
-
-                                /* delete stream */
-                                fclose( le_stream );
 
                             }
 
@@ -775,7 +785,7 @@
                         }
 
                         /* check dispatch */
-                        if ( le_switch == 1 ) {
+                        if ( le_switch == LE_UV3_POINT ) {
 
                             /* dispatch record */
                             memcpy( ( char * ) ( le_mbyte + le_mindex ), ( char * ) le_head, LE_ARRAY_DATA );

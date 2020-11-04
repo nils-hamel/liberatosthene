@@ -96,6 +96,16 @@
     le_void_t le_uv3_get_record_pose( le_byte_t const * const le_record, le_real_t * const le_pose );
 
     /*! \brief mutator methods (implicit)
+     */
+
+    le_void_t le_uv3_set_sort_circle( le_byte_t * const le_primitive, le_size_t const le_type, le_size_t const le_scfg );
+
+    /*! \brief mutator methods (implicit)
+     */
+
+    le_byte_t * le_uv3_set_sort_primitive( le_byte_t * const le_buffer, le_size_t const le_size, le_size_t const le_scfg );
+
+    /*! \brief mutator methods (implicit)
      *
      *  Note :
      *

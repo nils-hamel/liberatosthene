@@ -26,17 +26,17 @@
 
     void le_operator_get_marker( le_array_t * const le_array, le_array_t * const le_beacon, le_size_t const le_offset ) {
 
-        /* array base pointer */
-        le_byte_t * le_base = le_array_get_byte( le_array ) + le_offset;
-
         /* parsing head */
-        le_byte_t * le_head = le_base;
+        le_byte_t * le_head = le_array_get_byte( le_array ) + le_offset;
+
+        /* array edge pointer */
+        le_byte_t * le_edge = le_array_get_byte( le_array ) + le_array_get_size( le_array );
 
         /* primitive type */
         le_byte_t le_type = 0;
 
         /* parsing array */
-        while ( ( le_head - le_base ) < le_offset ) {
+        while ( le_head < le_edge ) {
 
             /* extract primitive type */
             le_type = * ( le_head + LE_ARRAY_DATA_POSE ) * LE_ARRAY_DATA;
@@ -106,10 +106,8 @@
             /* reset detection flag */
             le_flag = LE_OPER_OFF;
 
-            /* reset head - devnote : could be replaced by last identity detection
-               head for improvement (to be confirmed on duplicated primitives with
-               differnet color) */
-            le_sec_head = le_sec_head;
+            /* reset head */
+            le_sec_head = le_sec_base;
 
             /* parsing secondary */
             while ( ( ! le_flag ) && ( ( le_sec_head - le_sec_base ) < le_sec_size ) ) {
@@ -224,5 +222,4 @@
         }
 
     }
-
 
