@@ -1699,7 +1699,7 @@
         le_mono_t le_sclass = LE_MONO_C;
 
         /* secondary state flag */
-        le_enum_t le_flag = _LE_TRUE;
+        le_enum_t le_flag = _LE_FALSE;
 
         /* threshold variable */
         le_size_t le_threshold = 0;
@@ -1777,8 +1777,7 @@
                 /* update secondary state flag */
                 le_flag = _LE_TRUE;
 
-            /* update secondary state flag */
-            } else { le_flag = _LE_FALSE; }
+            }
 
             /* enumerate daughter classes */
             for ( le_size_t le_digit = 0; le_digit < _LE_USE_BASE; le_digit ++ ) {
@@ -1815,7 +1814,7 @@
         le_poly_t le_sclass = LE_POLY_C;
 
         /* secondary state flag */
-        le_enum_t le_flag = _LE_TRUE;
+        le_enum_t le_flag = _LE_FALSE;
 
         le_size_t le_psize = le_array_get_size( le_array );
         le_size_t le_ssize = le_array_get_size( le_dual  );
@@ -1855,8 +1854,7 @@
             /* update secondary state flag */
             le_flag = _LE_TRUE;
 
-        /* update secondary state flag */
-        } else { le_flag = _LE_FALSE; }
+        }
 
         /* enumeration boundary */
         if ( le_parse == le_span ) {
