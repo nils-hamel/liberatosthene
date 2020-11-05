@@ -20,7 +20,7 @@
  */
 
     /*! \file   eratosthene-door.h
-     *  \author Nils Hamel <nils.hamel@bluewin.ch>
+     *  \author Nils Hamel <nils.hamel@alumni.epfl.ch>
      *
      *  liberatosthene - door
      */

@@ -105,7 +105,8 @@ The [_eratosthene-suite_](https://github.com/nils-hamel/eratosthene-suite) repos
 ## Copyright and License
 
 **liberatosthene** - Nils Hamel <br >
-Copyright (c) 2016-2020 DHLAB, EPFL
+Copyright (c) 2016-2020 DHLAB, EPFL <br >
+Copyright (c) 2020 Republic and Canton of Geneva
 
 This program is licensed under the terms of the GNU GPLv3. Documentation and illustrations are licensed under the terms of the CC BY 4.0.
 

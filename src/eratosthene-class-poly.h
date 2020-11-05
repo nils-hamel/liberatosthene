@@ -20,7 +20,7 @@
  */
 
     /*! \file   eratosthene-class-poly.h
-     *  \author Nils Hamel <nils.hamel@bluewin.ch>
+     *  \author Nils Hamel <nils.hamel@alumni.epfl.ch>
      *
      *  liberatosthene - class-poly (poly-vertex class)
      */

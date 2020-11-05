@@ -20,7 +20,7 @@
  */
 
     /*! \file   eratosthene-class-mono.h
-     *  \author Nils Hamel <nils.hamel@bluewin.ch>
+     *  \author Nils Hamel <nils.hamel@alumni.epfl.ch>
      *
      *  liberatosthene - class-mono (mono-vertex class)
      */
