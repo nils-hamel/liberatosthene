@@ -1,8 +1,9 @@
 /*
  *  liberatosthene
  *
- *      Nils Hamel - nils.hamel@bluewin.ch
+ *      Nils Hamel - nils.hamel@alumni.epfl.ch
  *      Copyright (c) 2016-2020 DHLAB, EPFL
+ *      Copyright (c) 2020 Republic and Canton of Geneva
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1597,7 +1598,9 @@
                 /* extract primitive type */
                 le_type = ( * le_array_mac_ltype( le_array ) ); 
 
-            }
+            } *      Nils Hamel - nils.hamel@alumni.epfl.ch
+ *      Copyright (c) 2016-2020 DHLAB, EPFL
+ *      Copyright (c) 2020 Republic and Canton of Geneva
 
             /* check remaining vertex */
             if ( ( le_read = ( ( le_type * LE_ARRAY_DATA ) - le_read ) ) > 0 ) {
